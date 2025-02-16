@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
+
+* {
+    font-family: "Roboto", sans-serif;
+    padding: 0%;
+    margin: 0%;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 253, 253);
+}
+
+.item {
+    background-color: rgba(255, 255, 255, 0.841);
+    border-radius: 15px;
+    width: fit-content;
+    height: 312px;
+    object-fit: cover;
+    display: inline-block;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.item:hover {
+    transform: scale(1.2);
+    margin-top: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: 0.3s ease-in-out;
+    position: relative;
+    top: 40px;
+    right: 0px;
+    left: 10px;
+    background-color: white;
+    z-index: 2;
+}
+
+.thumbnail-vid {
+    width: 400px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.channel-icon {
+    width: 35px;
+    border-radius: 100%;
+    position: relative;
+    left: -175px;
+    right: 5px;
+    top: -60px;
+    bottom: 0px;
+}
+
+.vid-title {
+    font-size: 14px;
+    /* font-family: 'Roboto', sans-serif; */
+    font-weight: 600;
+    position: relative;
+    left: 20px;
+    top: -4px;
+    height: auto;
+    text-justify: distribute-all-lines;
+}
+
+h1 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 340px;
+    text-align: left;
+}
+
+.ch-name {
+    font-size: small;
+    font-weight: 350;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    position: relative;
+    left: 50px;
+    bottom: -5px;
+    text-align: left;
+    margin-bottom: 0px;
+}
+
+.duration {
+    background-color: rgb(20, 20, 20);
+    color: white;
+    font-size: smaller;
+    width: fit-content;
+    border-radius: 4px;
+    padding: 2px;
+    position: relative;
+    left: 175px;
+    top: -30px;
+}
