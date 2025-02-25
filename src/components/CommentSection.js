@@ -3,79 +3,65 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import Comment from "./Comment";
-import Clustered from "./Clustered";
-import Chatbot from "./Chatbot";
-import YourReply from "./YourReply";
+import './commentsection.css';
 
-const socket = io("http://localhost:5000");  // Connect to backend
+const socket = io("http://localhost:5000");
 
 function CommentSection() {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
-    const [activeTab, setActiveTab] = useState("all");
     const { video_id } = useParams();
     const user_id = localStorage.getItem("user_id");
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/comments/${video_id}/comments`).then((res) => {
-            setComments(res.data);
-        });
+        // Fetch initial comments from backend (API call)
+        axios.get(`http://localhost:5000/comments/${video_id}/comments`)
+            .then((res) => setComments(res.data))
+            .catch((err) => console.error("Error fetching comments:", err));
 
-        socket.on("receive_comment", (newComment) => {
-            setComments((prevComments) => [newComment, ...prevComments]);
-        });
+        socket.emit("join", { video_id });
 
-        return () => socket.off("receive_comment");
+        // Handle new comments with duplicate check
+        const handleNewComment = (newComment) => {
+            setComments((prevComments) => {
+                const exists = prevComments.some(comment => comment._id === newComment._id);
+                return exists ? prevComments : [newComment, ...prevComments];
+            });
+        };
+
+        // Prevent multiple socket event listeners
+        if (!socket.hasListeners("receive_comment")) {
+            socket.on("receive_comment", handleNewComment);
+        }
+
+        return () => {
+            socket.off("receive_comment", handleNewComment); // Cleanup listener on unmount
+        };
     }, [video_id]);
 
     const handleComment = () => {
         if (!comment.trim()) return;
+
         const newComment = {
             user_id,
             comment_text: comment,
             video_id,
-            timestamp: new Date().toISOString()
         };
-        socket.emit("new_comment", newComment);
-        setComment("");
-    };
 
-    const renderComments = (filter) => {
-        let filteredComments = comments;
-        if (filter === "your") {
-            filteredComments = comments.filter(c => c.user_id === user_id);
-        }
-        return filteredComments.map((c) => (
-            <Comment
-                key={c._id}
-                commenter={c.user_id}
-                date={new Date(c.timestamp).toLocaleString()}
-                text={c.comment}
-                replies={c.replies || []}
-                comment_id={c._id}
-            />
-        ));
+        axios.post(`http://localhost:5000/comments/${video_id}/add`, newComment)
+            .then((res) => {
+                if (res.data.success) {
+                    // Don't add the comment here, let WebSocket handle it
+                    setComment(""); 
+                }
+            })
+            .catch((err) => console.error("Error posting comment:", err));
     };
 
     return (
-        <>
+        <div>
 
-            <ul className="nav nav-tabs justify-content-center mt-3" role="tablist" style={{ borderBottom: "2px solid #ddd" }}>
-                <li className="nav-item">
-                    <button className={`nav-link ${activeTab === "all" ? "active" : ""}`} onClick={() => setActiveTab("all")} style={{ fontWeight: "bold", color: "#555" }}>All</button>
-                </li>
-                <li className="nav-item">
-                    <button className={`nav-link ${activeTab === "clustered" ? "active" : ""}`} onClick={() => setActiveTab("clustered")} style={{ fontWeight: "bold", color: "#555" }}>Clustered</button>
-                </li>
-                <li className="nav-item">
-                    <button className={`nav-link ${activeTab === "chatbot" ? "active" : ""}`} onClick={() => setActiveTab("chatbot")} style={{ fontWeight: "bold", color: "#555" }}>Chatbot</button>
-                </li>
-                <li className="nav-item">
-                    <button className={`nav-link ${activeTab === "your" ? "active" : ""}`} onClick={() => setActiveTab("your")} style={{ fontWeight: "bold", color: "#555" }}>Your Comments</button>
-                </li>
-            </ul>
-
-        <div className="container mt-4">
+        <div className="container mt-4" style={{backgroundColor:'rgb(249, 250, 251)'}}>
             <h2 className="mb-3">Comments</h2>
 
             {/* Comment Input */}
@@ -91,17 +77,14 @@ function CommentSection() {
             </div>
 
             {/* List of Comments */}
+            <div className="container comment-card custom-scroll bg-white" style={{border:'none'}}>
             <ul className="list-unstyled mt-3  align-items-center w-100">
-
-                    {activeTab === "all" && renderComments("all")}
-                    {activeTab === "clustered" && <Clustered></Clustered>}
-                    {activeTab === "chatbot" && <Chatbot></Chatbot>}
-                    {activeTab === "your" && <YourReply></YourReply>}
+                {comments.map((c) => <Comment key={c._id} {...c} />)}
             </ul>
-              
+            </div>
 
         </div>
-        </>
+        </div>
     );
 }
 

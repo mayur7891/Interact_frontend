@@ -1,0 +1,42 @@
+.arrow-btn:hover{
+    background-color: #def1ff;
+}
+
+.arrow-btn{
+    border-radius: 30px;
+    color: #065fd4 !important;
+}
+
+.bg-purple {
+    background-color: #6f42c1 !important; /* Bootstrap's default purple */
+}
+
+.bg-orange {
+    background-color: #d87213 !important; /* Bootstrap's default purple */
+}
+
+.reply-btns{
+    border-radius: 30px;
+}
+
+.reply-btns:hover{
+    background-color: #f2f2f2;
+}
+
+.user-icon {
+    display: inline-flex; /* Align text inside */
+    align-items: center;
+    justify-content: center;
+    width: 2.3rem;  /* Adjust size as needed */
+    height: 2.3rem; /* Same as width to make it circular */
+    border-radius: 50%; /* Makes it a perfect circle */
+    font-size: 1rem; /* Adjust font size */
+}
+
+.reply-icon:hover{
+    color: #065fd4 !important;
+}
+
+.thumb-icon:hover{
+    color:#065fd4;
+}

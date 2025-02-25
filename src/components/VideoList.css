@@ -1,5 +1,5 @@
 /* Video List Container */
-.container {
+.video-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

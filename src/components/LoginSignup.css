@@ -1,0 +1,117 @@
+.custom-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+.custom-alert {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  text-align: center;
+  min-width: 200px;
+}
+
+.custom-form-wrapper {
+  width: 350px;
+  perspective: 1200px;
+}
+
+.custom-form-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease-in-out;
+  backface-visibility: hidden;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.custom-form-group {
+  margin-bottom: 15px;
+  text-align: left;
+  position: relative;
+}
+
+.custom-form-group label {
+  font-weight: bold;
+  color: #444;
+}
+
+.custom-input {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 16px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.custom-input:focus {
+  border-color: #667eea;
+  box-shadow: 0px 0px 5px rgba(102, 126, 234, 0.5);
+}
+
+.custom-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.custom-button:hover {
+  background: linear-gradient(135deg, #564aa3, #3b5998);
+}
+
+.custom-toggle-text {
+  margin-top: 15px;
+  color: #667eea;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.custom-toggle-text:hover {
+  text-decoration: underline;
+}
+
+/* Placeholder animation */
+@keyframes fadeInPlaceholder {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.custom-input::placeholder {
+  animation: fadeInPlaceholder 2s infinite alternate;
+}

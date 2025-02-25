@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 function LoginSignup() {
     const [activeTab, setActiveTab] = useState("login");
     const [user_name, setEmail] = useState("");
@@ -40,8 +41,7 @@ function LoginSignup() {
 
     return (
         <div className="container mt-5" style={{background:'transparent'}}>
-            
-            <div className="border p-4 rounded shadow-sm bg-light">
+            <div className="border p-4 rounded shadow-sm bg-light col-md-5 mx-auto">
                 <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                     <li className="nav-item" role="presentation">
                         <button

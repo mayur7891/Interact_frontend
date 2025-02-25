@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import YoutubeCard from "./YoutubeCard";
 import "./VideoList.css";
 import axios from "axios";
-
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const VideoList = () => {
     const [videoData, setVideoData] = useState([]);
@@ -22,11 +23,17 @@ const VideoList = () => {
 
 
     return (
-        <div className="container">
+        <>
+            <Navbar></Navbar>
+            <div className="min-vh-100" style={{ backgroundColor:'rgb(249, 250, 251)'}}>
+        <div className="video-container">
             {videoData.map((video, index) => (
                 <YoutubeCard key={index} video={video} />
             ))}
         </div>
+            </div>
+        <Footer></Footer>
+        </>
     );
 };
 
