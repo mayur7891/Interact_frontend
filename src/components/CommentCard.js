@@ -1,7 +1,6 @@
 import { useState } from "react";
-// import { motion } from "framer-motion";
 import * as framerMotion from "framer-motion";
-import { FaUserCircle,  FaPaperPlane } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
 
 const { motion } = framerMotion;
 
@@ -11,9 +10,12 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
     const [replyList, setReplyList] = useState(replies);
     const [expanded, setExpanded] = useState(false);
 
+    // Fetch logged-in username
+    const loggedInUsername = localStorage.getItem("username") || "You";
+
     const handleReplySubmit = () => {
         if (newReply.trim() !== "") {
-            setReplyList([...replyList, { username: "You", comment: newReply, time: "Just now" }]);
+            setReplyList([...replyList, { username: loggedInUsername, comment: newReply, time: "Just now" }]);
             setNewReply("");
         }
     };
@@ -28,11 +30,12 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
                 height: showReplies ? "auto" : "15vh",
                 overflow: "hidden",
                 transition: "height 0.3s ease-in-out",
-                border:'none'
+                border: "none"
             }}
         >
             <div className="d-flex align-items-start">
-                <FaUserCircle size={30} className="text-primary me-2" />
+                {/* Show correct profile initial */}
+                <div className="profile-icon me-2">{username.charAt(0).toUpperCase()}</div>
                 <div className="flex-grow-1">
                     <div className="d-flex justify-content-between align-items-center">
                         <h6 className="fw-bold text-dark mb-0 small">{username}</h6>
@@ -60,12 +63,6 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
                         >
                             {showReplies ? "Hide Replies" : "Show Replies"}
                         </small>
-                        {/* <FaChevronDown
-                            size={16}
-                            className="text-dark cursor-pointer"
-                            onClick={() => setShowReplies(!showReplies)}
-                            style={{ cursor: "pointer" }}
-                        /> */}
                     </div>
 
                     {showReplies && (
@@ -75,22 +72,29 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
                             transition={{ duration: 0.4 }}
                             className="mt-2"
                         >
-                            {replyList.map((reply, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="reply-card p-2 mb-2 rounded"
-                                >
-                                    <div className="d-flex align-items-center">
-                                        <FaUserCircle size={25} className="text-secondary me-2" />
-                                        <h6 className="fw-bold text-dark mb-0 small">{reply.username}</h6>
-                                    </div>
-                                    <p className="mt-1 mb-0 text-dark small">{reply.comment}</p>
-                                    <small className="text-muted">{reply.time}</small>
-                                </motion.div>
-                            ))}
+                            {replyList.length > 0 ? (
+                                replyList.map((reply, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="reply-card p-2 mb-2 rounded"
+                                    >
+                                        <div className="d-flex align-items-center">
+                                            {/* ✅ Correct replier's initial */}
+                                            <div className="profile-icon-reply me-2">
+                                                {reply.username.charAt(0).toUpperCase()}
+                                            </div>
+                                            <h6 className="fw-bold text-dark mb-0 small">{reply.username}</h6>
+                                        </div>
+                                        <p className="mt-1 mb-0 text-dark small">{reply.comment}</p>
+                                        <small className="text-muted">{reply.time}</small>
+                                    </motion.div>
+                                ))
+                            ) : (
+                                <p className="ms-4 text-muted">No replies yet...</p>
+                            )}
 
                             <div className="d-flex align-items-center mt-2">
                                 <input
@@ -124,6 +128,17 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
                     background: #f0f2f5;
                     border-left: 3px solid #0d6efd;
                 }
+                .profile-icon, .profile-icon-reply {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    background-color: #0d6efd;
+                    color: white;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
                 .cursor-pointer:hover {
                     opacity: 0.8;
                 }
@@ -136,7 +151,7 @@ const CommentTest = () => {
     const comments = [
         {
             username: "John Doe",
-            comment: "This feature is amazing! 🔥 I can't believe how smooth everything works. This is the best feature I have seen in a long time.",
+            comment: "This feature is amazing! 🔥 I can't believe how smooth everything works.",
             time: "2 hours ago",
             replies: [
                 { username: "Alice", comment: "Totally agree!", time: "1 hour ago" },
@@ -145,9 +160,9 @@ const CommentTest = () => {
         },
         {
             username: "Bob",
-            comment: "Can’t wait to use this. Great work! This will be super useful for everyone looking for a better comment section experience.",
+            comment: "Can’t wait to use this. Great work!",
             time: "10 minutes ago",
-            replies: [{ username: "Bob", comment: "This is so useful!", time: "30 minutes ago" }]
+            replies: [{ username: "Charlie", comment: "This is great!", time: "5 minutes ago" }]
         }
     ];
 

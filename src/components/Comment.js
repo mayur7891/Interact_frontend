@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
-import { FaUserCircle, FaPaperPlane } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
 
 const socket = io("https://flask-app-570571842976.us-central1.run.app");
 
@@ -44,9 +44,12 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
     const addReply = () => {
         if (!replyText.trim()) return;
 
+        const loggedInUsername = localStorage.getItem("username") || "Unknown"; // Fetch logged-in username
+
         const newReply = {
             comment_id: _id,
             reply_user_id: localStorage.getItem("user_id"),
+            reply_username: loggedInUsername,  // Store username
             reply_text: replyText
         };
 
@@ -67,22 +70,22 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
         const now = new Date();
         const past = new Date(timestamp);
         const diffInSeconds = Math.floor((now - past) / 1000);
-    
+
         const years = Math.floor(diffInSeconds / (3600 * 24 * 365));
         if (years > 0) return `${years} year${years > 1 ? 's' : ''} ago`;
-    
+
         const months = Math.floor(diffInSeconds / (3600 * 24 * 30));
         if (months > 0) return `${months} month${months > 1 ? 's' : ''} ago`;
-    
+
         const days = Math.floor(diffInSeconds / (3600 * 24));
         if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    
+
         const hours = Math.floor(diffInSeconds / 3600);
         if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    
+
         const minutes = Math.floor(diffInSeconds / 60);
         if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    
+
         return `${diffInSeconds} second${diffInSeconds > 1 ? 's' : ''} ago`;
     };
 
@@ -100,8 +103,8 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
             }}
         >
             <div className="d-flex align-items-start">
-                <FaUserCircle size={30} className="text-primary me-2" />
-                <div className="flex-grow-1">
+                <div className="profile-icon">{user_id.charAt(0).toUpperCase()}</div>
+                <div className="flex-grow-1 ms-2">
                     <div className="d-flex justify-content-between align-items-center">
                         <h6 className="fw-bold text-dark mb-0 small">{user_id}</h6>
                         <small className="text-muted">{getTimeDifference(timestamp)}</small>
@@ -169,8 +172,10 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
                                                 className="reply-card p-2 mb-2 rounded"
                                             >
                                                 <div className="d-flex align-items-center">
-                                                    <FaUserCircle size={25} className="text-secondary me-2" />
-                                                    <h6 className="fw-bold text-dark mb-0 small">{r.reply_user_id}</h6>
+                                                    <div className="profile-icon">
+                                                        {r.reply_username ? r.reply_username.charAt(0).toUpperCase() : "?"}
+                                                    </div>
+                                                    <h6 className="fw-bold text-dark mb-0 small ms-2">{r.reply_username || r.reply_user_id}</h6>
                                                 </div>
                                                 <p className="mt-1 mb-0 text-dark small">{r.reply_text}</p>
                                                 <small className="text-muted">{getTimeDifference(r.reply_id)}</small>
@@ -181,27 +186,27 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
                                     )}
                                 </>
                             )}
-
-                            
                         </motion.div>
                     )}
                 </div>
             </div>
 
             <style>{`
-                .comment-card {
-                    background: transparent;
-                    transition: all 0.3s ease-in-out;
-                }
-                .comment-card:hover {
-                    transform: translateY(-2px);
+                .profile-icon {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    background-color: #007bff;
+                    color: white;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: bold;
+                    font-size: 14px;
                 }
                 .reply-card {
                     background: #f0f2f5;
                     border-left: 3px solid #0d6efd;
-                }
-                .cursor-pointer:hover {
-                    opacity: 0.8;
                 }
             `}</style>
         </motion.div>

@@ -10,14 +10,17 @@ const Chatbot = () => {
   const [query, setQuery] = useState("");
   const [matchedComments, setMatchedComments] = useState([]);
   const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(false); // New state for loader
   const { video_id } = useParams();
 
   const handleQuery = () => {
     if (!query.trim()) return;
 
-    const newquery = { query };
+    setLoading(true); // Show loader when request starts
+    setNotFound(false);
+    setMatchedComments([]);
 
-    axios.post(`https://flask-app-570571842976.us-central1.run.app/ml/test-chatbot/${video_id}`, newquery)
+    axios.post(`https://flask-app-570571842976.us-central1.run.app/ml/test-chatbot/${video_id}`, { query })
       .then((res) => {
         if (res.data.length > 0) {
           setMatchedComments(res.data);
@@ -31,6 +34,9 @@ const Chatbot = () => {
         console.log(err);
         setMatchedComments([]);
         setNotFound(true);
+      })
+      .finally(() => {
+        setLoading(false); // Hide loader when request completes
       });
   };
 
@@ -45,11 +51,23 @@ const Chatbot = () => {
           className="form-control"
           placeholder="Write a comment..."
         />
-        <button onClick={handleQuery} className="btn btn-primary">Search</button>
+        <button onClick={handleQuery} className="btn btn-primary" disabled={loading}>
+          {loading ? "Searching..." : "Search"}
+        </button>
       </div>
 
+      {/* Show loader while waiting for response */}
+      {loading && (
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-2">Fetching results...</p>
+        </div>
+      )}
+
       {/* Show initial image when no query is entered */}
-      { matchedComments.length === 0 && !notFound && (
+      {!loading && matchedComments.length === 0 && !notFound && (
         <div className="text-center">
           <img src={questionImage} alt="Got a question?" style={{ maxWidth: '200px' }} />
           <p className="mt-2">Got a question? Try to find it in the comment section.</p>
@@ -57,7 +75,7 @@ const Chatbot = () => {
       )}
 
       {/* Show error image when no matching query is found */}
-      {notFound && (
+      {!loading && notFound && (
         <div className="text-center">
           <img src={sorryImage} alt="No matching query found" style={{ maxWidth: '200px' }} />
           <p className="mt-2 text-danger">No matching query found</p>
@@ -65,7 +83,7 @@ const Chatbot = () => {
       )}
 
       {/* Show comments when there are results */}
-      {matchedComments.length > 0 && (
+      {!loading && matchedComments.length > 0 && (
         <ul className="list-unstyled mt-3 align-items-center w-100">
           {matchedComments.map((c) => <Comment key={c._id} {...c} />)}
         </ul>

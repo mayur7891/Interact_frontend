@@ -1,60 +1,69 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TestComment from "./TestComment";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { io } from "socket.io-client";
+ // Ensure Bootstrap is loaded
 
 const socket = io("https://flask-app-570571842976.us-central1.run.app");
 
 const Test = () => {
-    const [comment, setComment] = useState("");
-    const [comments, setComments] = useState([]);
-    const { video_id } = useParams();
-    const user_id = localStorage.getItem("user_id");
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);  // Added loader state
+  const { video_id } = useParams();
+  const user_id = localStorage.getItem("user_id");
 
-    useEffect(() => {
-      // Fetch initial comments from backend (API call)
-      axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${video_id}/comments`)
-          .then((res) => setComments(res.data))
-          .catch((err) => console.error("Error fetching comments:", err));
+  useEffect(() => {
+    setLoading(true); // Show loader before fetching comments
 
-      socket.emit("join", { video_id });
+    axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${video_id}/comments`)
+      .then((res) => {
+        // console.log("Fetched comments:", res.data);
+        setTimeout(() => {
+          setComments(res.data);
+          setLoading(false); // Hide loader after data is loaded
+        }, 500);
+      })
+      .catch((err) => {
+        console.error("Error fetching comments:", err);
+        setLoading(false);
+      });
 
-      // Handle new comments with duplicate check
-      const handleNewComment = (newComment) => {
-          setComments((prevComments) => {
-              const exists = prevComments.some(comment => comment._id === newComment._id);
-              return exists ? prevComments : [newComment, ...prevComments];
-          });
-      };
+    socket.emit("join", { video_id });
 
-      // Prevent multiple socket event listeners
-      if (!socket.hasListeners("receive_comment")) {
-          socket.on("receive_comment", handleNewComment);
-      }
+    const handleNewComment = (newComment) => {
+      setComments((prevComments) => {
+        const exists = prevComments.some(comment => comment._id === newComment._id);
+        return exists ? prevComments : [newComment, ...prevComments];
+      });
+    };
 
-      return () => {
-          socket.off("receive_comment", handleNewComment); // Cleanup listener on unmount
-      };
+    if (!socket.hasListeners("receive_comment")) {
+      socket.on("receive_comment", handleNewComment);
+    }
+
+    return () => {
+      socket.off("receive_comment", handleNewComment);
+    };
   }, [video_id]);
 
   const handleComment = () => {
-      if (!comment.trim()) return;
+    if (!comment.trim()) return;
 
-      const newComment = {
-          user_id,
-          comment_text: comment,
-          video_id,
-      };
+    const newComment = {
+      user_id,
+      comment_text: comment,
+      video_id,
+    };
 
     axios.post(`https://flask-app-570571842976.us-central1.run.app/comments/${video_id}/add`, newComment)
-          .then((res) => {
-              if (res.data.success) {
-                  // Don't add the comment here, let WebSocket handle it
-                  setComment(""); 
-              }
-          })
-          .catch((err) => console.error("Error posting comment:", err));
+      .then((res) => {
+        if (res.data.success) {
+          setComment(""); // WebSocket will handle UI update
+        }
+      })
+      .catch((err) => console.error("Error posting comment:", err));
   };
 
   return (
@@ -73,11 +82,23 @@ const Test = () => {
       </div>
 
       <h5 className="mt-3 mb-3">Comments ({comments.length})</h5>
+
+      {/* Show loader when fetching comments */}
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100px" }}>
+          <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
         <ul className="list-group list-group-flush mb-3">
-          {comments.map((c) => (
-            <TestComment key={c._id} {...c}></TestComment>
-          ))}
+          {comments.length > 0 ? (
+            comments.map((c) => <TestComment key={c._id} {...c} />)
+          ) : (
+            <p className="text-center text-muted">No comments yet. Be the first to comment!</p>
+          )}
         </ul>
+      )}
     </div>
   );
 };
