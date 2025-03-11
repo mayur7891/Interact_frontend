@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://flask-app-570571842976.us-central1.run.app");
 
 const Test = () => {
     const [comment, setComment] = useState("");
@@ -14,7 +14,7 @@ const Test = () => {
 
     useEffect(() => {
       // Fetch initial comments from backend (API call)
-      axios.get(`http://localhost:5000/comments/${video_id}/comments`)
+      axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${video_id}/comments`)
           .then((res) => setComments(res.data))
           .catch((err) => console.error("Error fetching comments:", err));
 
@@ -47,7 +47,7 @@ const Test = () => {
           video_id,
       };
 
-      axios.post(`http://localhost:5000/comments/${video_id}/add`, newComment)
+    axios.post(`https://flask-app-570571842976.us-central1.run.app/comments/${video_id}/add`, newComment)
           .then((res) => {
               if (res.data.success) {
                   // Don't add the comment here, let WebSocket handle it

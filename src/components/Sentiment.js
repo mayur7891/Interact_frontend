@@ -18,7 +18,7 @@ const SentimentChart = () => {
     useEffect(() => {
         const fetchSentimentData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/ml/sentiment/${video_id}`);
+                const response = await fetch(`https://flask-app-570571842976.us-central1.run.app/ml/sentiment/${video_id}`);
                 if (!response.ok) throw new Error("No sentiment data found");
 
                 const data = await response.json();
@@ -87,7 +87,7 @@ const SentimentChart = () => {
             <div className="card shadow-lg p-3 text-center" style={{ width: "400px" }}>
                 <h5 className="card-title fw-bold">Sentiment Chart</h5>
                 <div className="chart-container mx-auto" style={{ height: "320px", width: "320px" }}>
-                    <Pie data={data} options={options} />
+                    <Pie data={data} options={options} style={{position:'relative'}}/>
                 </div>
             </div>
 

@@ -61,7 +61,7 @@ const TestLogin = () => {
 
         try {
             if (isLogin) {
-                const res = await axios.post("http://localhost:5000/auth/login", {
+                const res = await axios.post("https://flask-app-570571842976.us-central1.run.app/auth/login", {
                     user_name: formData.username,
                     password: formData.password,
                 });
@@ -69,7 +69,7 @@ const TestLogin = () => {
                 localStorage.setItem("user_id", res.data.user_id);
                 navigate("/videos");
             } else {
-                await axios.post("http://localhost:5000/auth/register", {
+                await axios.post("https://flask-app-570571842976.us-central1.run.app/auth/register", {
                     user_name: formData.username,
                     password: formData.password,
                     isCreator: true,

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+// import video from './images/BE.mp4'
 
 export default function Intro() {
     return (
@@ -12,9 +13,10 @@ export default function Intro() {
                 className="d-flex justify-content-center"
             >
                 <video width="80%" controls autoPlay loop muted className="rounded shadow-lg">
-                    <source src="/videos/service-intro.mp4" type="video/mp4" />
+                    <source src="/images/BE.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
+
             </motion.div>
         </div>
     );

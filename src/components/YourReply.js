@@ -10,7 +10,7 @@ const YourReply = () => {
   const[yourComments,setYourComments]=useState([]);
 
   useEffect(()=>{
-    axios.get(`http://localhost:5000/comments/${user_id}/${video_id}`)
+    axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${user_id}/${video_id}`)
     .then((res)=>{
         if(res.data.success){
             setYourComments(res.data.comments);

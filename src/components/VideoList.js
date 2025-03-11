@@ -11,7 +11,7 @@ const VideoList = () => {
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/video/videos");
+                const response = await axios.get("https://flask-app-570571842976.us-central1.run.app/video/videos");
                 setVideoData(response.data);
             } catch (error) {
                 console.error("Error fetching videos:", error);
@@ -25,14 +25,14 @@ const VideoList = () => {
     return (
         <>
             <Navbar></Navbar>
-            <div className="min-vh-100" style={{ backgroundColor:'rgb(249, 250, 251)'}}>
-        <div className="video-container">
-            {videoData.map((video, index) => (
-                <YoutubeCard key={index} video={video} />
-            ))}
-        </div>
+            <div className="min-vh-100" style={{ backgroundColor: 'rgb(249, 250, 251)' }}>
+                <div className="video-container">
+                    {videoData.map((video, index) => (
+                        <YoutubeCard key={index} video={video} />
+                    ))}
+                </div>
             </div>
-        <Footer></Footer>
+            <Footer></Footer>
         </>
     );
 };

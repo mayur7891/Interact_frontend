@@ -22,7 +22,7 @@ const Clustered = () => {
         if (!video_id) return;
 
         // Fetch distinct clusters with one comment each
-        axios.get(`http://localhost:5000/comments/unique_clusters/${video_id}`)
+        axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/unique_clusters/${video_id}`)
             .then((res) => {
               setClusteredComments(res.data.clusters)
     })
@@ -32,7 +32,7 @@ const Clustered = () => {
     // Function to fetch all comments for a specific cluster
     const fetchClusterComments = async (clusterId) => {
         try {
-            const res = await axios.get(`http://localhost:5000/comments/cluster/${video_id}/${clusterId}`);
+            const res = await axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/cluster/${video_id}/${clusterId}`);
             setAllClusterComments((prev) => ({ ...prev, [clusterId]: res.data.comments }));
         } catch (error) {
             console.error("Error fetching cluster comments:", error);
@@ -52,7 +52,7 @@ const Clustered = () => {
     };
 
     useEffect(()=>{
-        axios.get(`http://localhost:5000/ml/get_all_cluster_replies/${video_id}/${String(creator_id)}`)
+        axios.get(`https://flask-app-570571842976.us-central1.run.app/ml/get_all_cluster_replies/${video_id}/${String(creator_id)}`)
         .then((res)=>{
             const clusteredReplies = new Map(res.data.map(item => [item.cluster_no, item.replies]));
             setAllClusterReplies(clusteredReplies);
@@ -72,7 +72,7 @@ const Clustered = () => {
             creator_id: creator_id
         };
 
-        axios.post(`http://localhost:5000/ml/reply_cluster/${video_id}/${cluster_no}`, newReply)
+        axios.post(`https://flask-app-570571842976.us-central1.run.app/ml/reply_cluster/${video_id}/${cluster_no}`, newReply)
             .then((res) => {
                 if (res.data.message) {
                     setAllClusterReplies(prev => {
@@ -97,7 +97,7 @@ const Clustered = () => {
     };
 
     const handleClustering = ()=>{
-        axios.get(`http://localhost:5000/ml/get_clusters/${video_id}`)
+        axios.get(`https://flask-app-570571842976.us-central1.run.app/ml/get_clusters/${video_id}`)
         .then((res)=>{
             if(res.data.message){
                 console.log(res.data);
@@ -198,7 +198,7 @@ const Clustered = () => {
                                     </li>
                                 ))
                             ):(
-                            <li className="list-group-item">Loading Replies...</li>)
+                            <li className="list-group-item">No reply added yet.</li>)
                             }
                         </ul>
                     )}

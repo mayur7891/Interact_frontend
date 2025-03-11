@@ -17,7 +17,7 @@ const Chatbot = () => {
 
     const newquery = { query };
 
-    axios.post(`http://localhost:5000/ml/test-chatbot/${video_id}`, newquery)
+    axios.post(`https://flask-app-570571842976.us-central1.run.app/ml/test-chatbot/${video_id}`, newquery)
       .then((res) => {
         if (res.data.length > 0) {
           setMatchedComments(res.data);

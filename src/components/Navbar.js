@@ -1,27 +1,21 @@
 import React, { useState } from "react";
 import logo from "./images/cover.png";
-import { FaSignOutAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { FaSignOutAlt, FaExclamationCircle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
     const navigate = useNavigate();
-    // State to track if the navbar is collapsed
     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-    // State for logout confirmation modal
     const [showModal, setShowModal] = useState(false);
 
-    // Toggle the collapse state
     const handleNavToggle = () => {
         setIsNavCollapsed(!isNavCollapsed);
     };
 
-    // Open the logout confirmation modal
     const handleLogoutClick = () => {
         setShowModal(true);
     };
 
-    // Confirm logout action
     const handleConfirmLogout = () => {
         setShowModal(false);
         setTimeout(() => {
@@ -29,28 +23,26 @@ function Navbar() {
             localStorage.removeItem("user_id");
             navigate("/login");
             console.log("User logged out!");
-        }, 300); // Replace with your actual logout logic
+        }, 300);
     };
 
     return (
         <>
             {/* Navbar */}
-            <nav className="navbar navbar-expand-lg p-3 nav-dark bg-dark" >
+            <nav className="navbar navbar-expand-lg p-3 nav-dark bg-dark">
                 <div className="container-fluid">
-                    {/* Logo */}
                     <a className="navbar-brand" href="/">
                         <div>
                             <img
                                 src={logo}
                                 alt="Logo"
                                 style={{
-                                    maxHeight: "40px", // Adjust based on your navbar height
+                                    maxHeight: "40px",
                                     height: "auto",
                                     width: "auto",
                                     objectFit: "contain",
                                 }}
                             />
-
                         </div>
                     </a>
 
@@ -66,66 +58,181 @@ function Navbar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                    {/* Navbar Links - Add "show" when not collapsed */}
-                    <div className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`} id="navbarNavDropdown">
+                    {/* Navbar Links */}
+                    <div
+                        className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`}
+                        id="navbarNavDropdown"
+                    >
                         <ul className="navbar-nav ms-auto text-white">
                             <li className="nav-item">
-                                <Link to="/" className="nav-link mx-2 active text-white" aria-current="page">
+                                <Link
+                                    to="/"
+                                    className="nav-link mx-2 active text-white"
+                                    aria-current="page"
+                                >
                                     Home
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/videos" className="nav-link mx-2 text-white" aria-current="page">
+                                <Link
+                                    to="/videos"
+                                    className="nav-link mx-2 text-white"
+                                    aria-current="page"
+                                >
                                     Videos
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link mx-2 text-white" to="/about">
-                                   About
+                                <Link to="/about" className="nav-link mx-2 text-white">
+                                    About
                                 </Link>
                             </li>
-                            
                             {/* Logout Button */}
                             <li className="nav-item">
                                 <button
                                     className="btn btn-outline-light mx-1 p-1"
-                                    style={{ fontSize: "0.8rem", padding: "4px 6px", minWidth: "35px", minHeight: "30px",marginTop:'6px', border:'none'}}
+                                    style={{
+                                        fontSize: "0.8rem",
+                                        padding: "4px 6px",
+                                        minWidth: "35px",
+                                        minHeight: "30px",
+                                        marginTop: "6px",
+                                        border: "none",
+                                    }}
                                     onClick={handleLogoutClick}
                                     title="Logout"
                                 >
                                     <FaSignOutAlt size={16} />
                                 </button>
                             </li>
-
                         </ul>
                     </div>
                 </div>
             </nav>
 
-            {/* Logout Confirmation Modal */}
+            {/* Plain and Stylish Logout Confirmation Modal */}
             {showModal && (
-                <div className="modal fade show d-block" tabIndex="-1">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Confirm Logout</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                <div className="plain-modal-overlay" onClick={() => setShowModal(false)}>
+                    <div className="plain-modal-card" onClick={(e) => e.stopPropagation()}>
+                        <div className="plain-modal-header">
+                            {/* <FaExclamationCircle className="exclamation-icon" size={24} /> */}
+                            <h3>Confirm Logout</h3>
+                            <button className="plain-close-btn" onClick={() => setShowModal(false)}>
+                                &times;
+                            </button>
+                        </div>
+                        <div className="plain-modal-body">
+                            <p>Are you sure you want to logout?</p>
+                            {/* Exclamation mark added between text and buttons */}
+                            <div className="plain-modal-warning">
+                                <FaExclamationCircle size={32} className="warning-icon" />
                             </div>
-                            <div className="modal-body">
-                                <p>Are you sure you want to logout?</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                                    Cancel
-                                </button>
-                                <button type="button" className="btn btn-danger" onClick={handleConfirmLogout}>
-                                    Logout
-                                </button>
-                            </div>
+                        </div>
+                        <div className="plain-modal-footer">
+                            <button className="plain-cancel-btn" onClick={() => setShowModal(false)}>
+                                Cancel
+                            </button>
+                            <button className="plain-confirm-btn" onClick={handleConfirmLogout}>
+                                Logout
+                            </button>
                         </div>
                     </div>
                 </div>
             )}
+
+            {/* Inline CSS for Plain Modal Styling */}
+            <style jsx="true">{`
+        .plain-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1050;
+        }
+        .plain-modal-card {
+          background: #fff;
+          border-radius: 12px;
+          padding: 24px;
+          width: 90%;
+          max-width: 360px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          font-family: sans-serif;
+          animation: fadeInUp 0.3s ease-out;
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .plain-modal-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .plain-modal-header h3 {
+          margin: 0;
+          font-size: 1.2rem;
+          font-weight: 500;
+          flex: 1;
+          text-align: center;
+          color: #333;
+        }
+        .exclamation-icon {
+          color: #333;
+          margin-right: 8px;
+        }
+        .plain-close-btn {
+          background: transparent;
+          border: none;
+          font-size: 1.2rem;
+          color: #999;
+          cursor: pointer;
+        }
+        .plain-modal-body {
+          margin-top: 16px;
+          text-align: center;
+          color: #555;
+        }
+        .plain-modal-warning {
+          margin: 16px 0;
+          text-align: center;
+        }
+        .warning-icon {
+          color: #ff4d4f;
+        }
+        .plain-modal-footer {
+          margin-top: 24px;
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+        }
+        .plain-cancel-btn,
+        .plain-confirm-btn {
+          padding: 8px 16px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 0.95rem;
+          cursor: pointer;
+          background: transparent;
+          transition: background 0.2s, transform 0.2s;
+          color: #333;
+        }
+        .plain-cancel-btn:hover,
+        .plain-confirm-btn:hover {
+          background: #f5f5f5;
+          transform: scale(1.02);
+        }
+      `}</style>
         </>
     );
 }

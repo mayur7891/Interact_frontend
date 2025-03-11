@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import { motion } from "framer-motion";
 import { FaUserCircle, FaPaperPlane } from "react-icons/fa";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://flask-app-570571842976.us-central1.run.app");
 
 const Comment = ({ _id, user_id, comment, timestamp }) => {
     const [expanded, setExpanded] = useState(false);
@@ -23,7 +23,7 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
         if (loadingReplies || showReplies) return;
 
         setLoadingReplies(true);
-        axios.get(`http://localhost:5000/comments/${_id}/replies`)
+        axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${_id}/replies`)
             .then((res) => {
                 const fetchedReplies = res.data || [];
                 if (fetchedReplies.message) {
@@ -50,7 +50,7 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
             reply_text: replyText
         };
 
-        axios.post(`http://localhost:5000/comments/${_id}/reply`, newReply)
+        axios.post(`https://flask-app-570571842976.us-central1.run.app/comments/${_id}/reply`, newReply)
             .then((res) => {
                 if (res.data.success) {
                     setReplies((prev) => (Array.isArray(prev) ? [...prev, res.data.reply] : [res.data.reply]));
