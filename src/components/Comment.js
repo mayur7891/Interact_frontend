@@ -6,7 +6,7 @@ import { FaPaperPlane } from "react-icons/fa";
 
 const socket = io("https://flask-app-570571842976.us-central1.run.app");
 
-const Comment = ({ _id, user_id, comment, timestamp }) => {
+const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReplies, setShowReplies] = useState(false);
     const [replyText, setReplyText] = useState("");
@@ -106,7 +106,7 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
                 <div className="profile-icon">{user_id.charAt(0).toUpperCase()}</div>
                 <div className="flex-grow-1 ms-2">
                     <div className="d-flex justify-content-between align-items-center">
-                        <h6 className="fw-bold text-dark mb-0 small">{user_id}</h6>
+                        <h6 className="fw-bold text-dark mb-0 small">{user_id} {`(Cluster ${cluster})`}</h6>
                         <small className="text-muted">{getTimeDifference(timestamp)}</small>
                     </div>
 
@@ -173,7 +173,7 @@ const Comment = ({ _id, user_id, comment, timestamp }) => {
                                             >
                                                 <div className="d-flex align-items-center">
                                                     <div className="profile-icon">
-                                                        {r.reply_username ? r.reply_username.charAt(0).toUpperCase() : "?"}
+                                                        {r.reply_user_id ? r.reply_user_id.charAt(0).toUpperCase() : "?"}
                                                     </div>
                                                     <h6 className="fw-bold text-dark mb-0 small ms-2">{r.reply_username || r.reply_user_id}</h6>
                                                 </div>

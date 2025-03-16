@@ -7,11 +7,12 @@ import { OrbitControls, Sphere, Torus } from '@react-three/drei';
 import './About.css';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import Sahil from './images/Sahil.jpeg'
+import Sahil from './images/sahil.jpg'
 import Mayur from './images/Mayur.jpeg'
 import Ankita from './images/Ankita.jpeg'
 import Nikhil from './images/Nikhil.jpeg'
 function FloatingShapes() {
+    
     const sphereRef = useRef();
     const torusRef = useRef();
     const icosaRef = useRef();
@@ -90,97 +91,97 @@ const About = () => {
 
 
     const team = [
-        { name: "Sahil", role: "Lead Developer", avatar:Sahil },
-        { name: "Mayur", role: "ML Developer", avatar:Mayur },
-        { name: "Ankita", role: "UI Designer", avatar:Ankita },
-        { name: "Nikhil", role: "Database Designer", avatar:Nikhil }
+        { name: "Sahil", avatar: Sahil },
+        { name: "Mayur", avatar: Mayur },
+        { name: "Ankita", avatar: Ankita },
+        { name: "Nikhil", avatar: Nikhil }
     ];
 
     return (
         <>
-    
+
             <div style={{ position: 'relative', zIndex: 1000 }}>
                 <Navbar />
             </div>
-        <div className="about-page">
-            <div className="threejs-scene">
-                <Scene />
-            </div>
+            <div className="about-page">
+                <div className="threejs-scene">
+                    <Scene />
+                </div>
 
-            {/* Color splashes */}
-            <div className="color-splashes">
-                {[...Array(8)].map((_, i) => (
-                    <div key={i} className="color-splash" style={{
-                        background: `hsl(${Math.random() * 360}, 70%, 60%)`,
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`
-                    }} />
-                ))}
-            </div>
+                {/* Color splashes */}
+                <div className="color-splashes">
+                    {[...Array(8)].map((_, i) => (
+                        <div key={i} className="color-splash" style={{
+                            background: `hsl(${Math.random() * 360}, 70%, 60%)`,
+                            top: `${Math.random() * 100}%`,
+                            left: `${Math.random() * 100}%`
+                        }} />
+                    ))}
+                </div>
 
-            {/* Hero Section */}
-            <section className="hero">
+                {/* Hero Section */}
+                <section className="hero">
+                    <motion.div
+                        className="paper-plane"
+                        ref={planeRef}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                    >
+                        <FaPaperPlane size={60} />
+                    </motion.div>
+
+                    <motion.div
+                        className="hero-content"
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 1.5 }}
+                    >
+                        <h1>Analyze. Learn. Interact.</h1>
+                        <p>Redefining digital interactions</p>
+                    </motion.div>
+                </section>
+
+                {/* Animated Heading */}
                 <motion.div
-                    className="paper-plane"
-                    ref={planeRef}
+                    className="animated-heading"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
                 >
-                    <FaPaperPlane size={60} />
-                </motion.div>
-
-                <motion.div
-                    className="hero-content"
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 1.5 }}
-                >
-                        <h1>Analyze. Learn. Interact.</h1>
-                    <p>Redefining digital interactions</p>
-                </motion.div>
-            </section>
-
-            {/* Animated Heading */}
-            <motion.div
-                className="animated-heading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-            >
-                <h2>
+                    <h2>
                         {"Smart Insights, Seamless Interact.".split("").map((char, i) => (
-                        <motion.span
+                            <motion.span
+                                key={i}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: i * 0.05 }}
+                            >
+                                {char}
+                            </motion.span>
+                        ))}
+                    </h2>
+                </motion.div>
+
+                {/* Module Cards */}
+                <div className="modules" ref={modulesRef}>
+                    {modules.map((module, i) => (
+                        <motion.div
                             key={i}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: i * 0.05 }}
+                            className={`card ${i % 2 === 0 ? 'left' : 'right'}`}
+                            initial={{ x: i % 2 === 0 ? -100 : 100, opacity: 0 }}
+                            animate={modulesInView ? { x: 0, opacity: 1 } : {}}
+                            transition={{ delay: i * 0.3, type: 'spring', stiffness: 50 }}
                         >
-                            {char}
-                        </motion.span>
+                            <div className="card-content">
+                                <h3>{module.title}</h3>
+                                <p>{module.description}</p>
+                            </div>
+                        </motion.div>
                     ))}
-                </h2>
-            </motion.div>
+                </div>
 
-            {/* Module Cards */}
-            <div className="modules" ref={modulesRef}>
-                {modules.map((module, i) => (
-                    <motion.div
-                        key={i}
-                        className={`card ${i % 2 === 0 ? 'left' : 'right'}`}
-                        initial={{ x: i % 2 === 0 ? -100 : 100, opacity: 0 }}
-                        animate={modulesInView ? { x: 0, opacity: 1 } : {}}
-                        transition={{ delay: i * 0.3, type: 'spring', stiffness: 50 }}
-                    >
-                        <div className="card-content">
-                            <h3>{module.title}</h3>
-                            <p>{module.description}</p>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+                {/* Team Section */}
 
-            {/* Team Section */}
-           
                 <div className="team-section">
                     <h2>Meet the Team</h2>
                     <div className="team-grid">
@@ -205,8 +206,8 @@ const About = () => {
                         ))}
                     </div>
                 </div>
-        </div>
-        <Footer></Footer>
+            </div>
+            <Footer></Footer>
         </>
     );
 };
