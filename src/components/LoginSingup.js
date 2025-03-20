@@ -17,7 +17,7 @@ function LoginSignup() {
             const res = await axios.post("https://flask-app-570571842976.us-central1.run.app/auth/login", { user_name, password });
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user_id", res.data.user_id);
-            console.log(res)
+            // console.log(res)
             navigate("/videos");
         } catch (error) {
             alert("Login Failed");

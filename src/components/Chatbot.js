@@ -31,7 +31,7 @@ const Chatbot = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setMatchedComments([]);
         setNotFound(true);
       })

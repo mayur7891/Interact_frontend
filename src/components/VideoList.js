@@ -14,13 +14,13 @@ const VideoList = () => {
             setLoading(true); // Show loader before fetching videos
             try {
                 const response = await axios.get("https://flask-app-570571842976.us-central1.run.app/video/videos");
-                console.log("Fetched videos:", response.data);
+                
                 setTimeout(() => {
                     setVideoData(response.data);
                     setLoading(false); // Hide loader after data is loaded
                 }, 500);
             } catch (error) {
-                console.error("Error fetching videos:", error);
+                // console.error("Error fetching videos:", error);
                 setLoading(false);
             }
         };

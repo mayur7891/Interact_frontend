@@ -25,7 +25,7 @@ const YourReply = () => {
         }
       })
       .catch((err) => {
-        console.error("Error fetching your comments:", err);
+        // console.error("Error fetching your comments:", err);
         setLoading(false);
       });
 

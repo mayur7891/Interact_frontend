@@ -22,7 +22,7 @@ function Navbar() {
             localStorage.removeItem("token");
             localStorage.removeItem("user_id");
             navigate("/login");
-            console.log("User logged out!");
+            // console.log("User logged out!");
         }, 300);
     };
 

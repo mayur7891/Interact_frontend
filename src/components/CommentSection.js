@@ -18,14 +18,14 @@ function CommentSection() {
         setLoading(true);
         axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${video_id}/comments`)
             .then((res) => {
-                console.log("Comments fetched:", res.data);
+                // console.log("Comments fetched:", res.data);
                 setComments(res.data);
             })
             .catch((err) => {
-                console.error("Error fetching comments:", err);
+                // console.error("Error fetching comments:", err);
             })
             .finally(() => {
-                console.log("Stopping loader...");
+                // console.log("Stopping loader...");
                 setTimeout(() => setLoading(false), 500);
             });
 
@@ -62,7 +62,9 @@ function CommentSection() {
                     setComment("");
                 }
             })
-            .catch((err) => console.error("Error posting comment:", err));
+            .catch((err) =>{ 
+                // console.error("Error posting comment:", err)
+            })
     };
 
     return (

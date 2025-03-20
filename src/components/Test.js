@@ -26,7 +26,7 @@ const Test = () => {
         }, 500);
       })
       .catch((err) => {
-        console.error("Error fetching comments:", err);
+        // console.error("Error fetching comments:", err);
         setLoading(false);
       });
 
@@ -63,7 +63,9 @@ const Test = () => {
           setComment(""); // WebSocket will handle UI update
         }
       })
-      .catch((err) => console.error("Error posting comment:", err));
+      .catch((err) =>{ 
+        // console.error("Error posting comment:", err)
+      });
   };
 
   return (

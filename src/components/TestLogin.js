@@ -77,7 +77,7 @@ const TestLogin = () => {
                 navigate("/");
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             setError(error.response?.data?.error || (isLogin ? "Login Failed" : "Signup Failed"));
         }
     };

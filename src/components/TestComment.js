@@ -42,7 +42,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
         setReplies(fetchedReplies);  // Update replies
       })
       .catch((err) => {
-        console.error("Error fetching replies:", err);
+        // console.error("Error fetching replies:", err);
         setReplies([]);
         setNoRepliesMessage("Failed to load replies. Please try again.");
       })
@@ -70,7 +70,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
         }
       })
       .catch((err) => {
-        console.error("Error posting reply:", err);
+        // console.error("Error posting reply:", err);
       });
   };
 
