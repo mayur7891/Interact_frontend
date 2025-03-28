@@ -29,7 +29,7 @@ function Navbar() {
     return (
         <>
             {/* Navbar */}
-            <nav className="navbar navbar-expand-lg p-3 nav-dark bg-dark">
+            <nav className="navbar navbar-expand-lg p-3 " style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)' }}>
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
                         <div>
@@ -83,6 +83,15 @@ function Navbar() {
                                 </Link>
                             </li>
                             <li className="nav-item">
+                                <Link
+                                    to="/dashboard"
+                                    className="nav-link mx-2 text-white"
+                                    aria-current="page"
+                                >
+                                    Dashboard
+                                </Link>
+                            </li>
+                            <li className="nav-item">
                                 <Link to="/about" className="nav-link mx-2 text-white">
                                     About
                                 </Link>
@@ -105,6 +114,7 @@ function Navbar() {
                                     <FaSignOutAlt size={16} />
                                 </button>
                             </li>
+                            
                         </ul>
                     </div>
                 </div>

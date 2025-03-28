@@ -95,20 +95,23 @@ canvas {
 }
 
 .card {
+    color: white;
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #1E293B, #334155);
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.05);
     transform-origin: center;
     transition: all 0.3s ease;
+  
 }
 
-.card:hover {
+.card-custom:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15); */
+    background: linear-gradient(135deg, #6D28D9, #9333EA)
 }
 
 .card.left {
@@ -123,12 +126,12 @@ canvas {
 
 .card-content h3 {
     font-size: 2rem;
-    color: #2c3e50;
+    color: white;
     margin-bottom: 1rem;
 }
 
 .card-content p {
-    color: #7f8c8d;
+    color: white;
     font-size: 1.1rem;
     line-height: 1.6;
 }
@@ -142,7 +145,7 @@ canvas {
 
 .team-section h2 {
     font-size: 2.5rem;
-    color: #2c3e50;
+    color: white;
     margin-bottom: 3rem;
 }
 
@@ -156,7 +159,7 @@ canvas {
 }
 
 .team-card {
-    background: white;
+    background: linear-gradient(135deg, #1E293B, #334155);
     padding: 2rem;
     border-radius: 15px;
     cursor: pointer;
@@ -167,6 +170,7 @@ canvas {
 
 .team-card:hover {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #6D28D9, #9333EA)
 }
 
 .avatar {
@@ -230,3 +234,4 @@ canvas {
         font-size: 1.3rem;
     }
 }
+

@@ -9,7 +9,7 @@ import { LuThumbsDown, LuThumbsUp } from "react-icons/lu";
 import "./testcomment.css";
 import { FaReply } from 'react-icons/fa';
 
-const socket = io("https://flask-app-570571842976.us-central1.run.app");
+const socket = io("https://flask-app-570571842976.asia-south1.run.app");
 
 const TestComment = ({ _id, user_id, comment, timestamp }) => {
   const [expanded, setExpanded] = useState(false);
@@ -32,7 +32,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
     if (loadingReplies || showReplies) return;
 
     setLoadingReplies(true);  // Set loading state
-    axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${_id}/replies`)
+    axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/${_id}/replies`)
       .then((res) => {
         const fetchedReplies = res.data || [];
         if (fetchedReplies.message) {
@@ -60,7 +60,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
       reply_text: replyText
     };
 
-    axios.post(`https://flask-app-570571842976.us-central1.run.app/comments/${_id}/reply`, newReply)
+    axios.post(`https://flask-app-570571842976.asia-south1.run.app/comments/${_id}/reply`, newReply)
       .then((res) => {
         if (res.data.success) {
           // setReplies((prev) => [...prev, res.data.reply]); // Update replies immediately
@@ -99,13 +99,13 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
   };
 
   return (
-    <li key={_id} className="list-group-item">
+    <li key={_id} className="list-group-item bg-transparent text-white border-0" >
       <div className="d-flex">
         <div><i className="me-2 user-icon bg-purple text-white fw-medium fst-normal">{String(user_id).charAt(0).toUpperCase()}</i></div>
         <div className='flex-grow-1'>
           <div className='d-flex justify-content-between'>
             <strong>{user_id}</strong>
-            <span className="text-muted" style={{ fontSize: "0.9rem" }}>{getTimeDifference(timestamp)}</span>
+            <span className="text-white" style={{ fontSize: "0.9rem" }}>{getTimeDifference(timestamp)}</span>
           </div>
           {/* <p>{comment}</p> */}
           <p className="mt-1">
@@ -117,13 +117,13 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
             )}
           </p>
           <div>
-            <button className="btn btn-transparent-primary btn-sm me-2 thumb-icon">
+            <button className="btn btn-transparent-primary btn-sm me-2 thumb-icon text-white">
               <LuThumbsUp className='fs-5' />
             </button>
-            <button className="btn btn-transparent-danger btn-sm me-2 thumb-icon">
+            <button className="btn btn-transparent-danger btn-sm me-2 thumb-icon text-white">
               <LuThumbsDown className='fs-5' />
             </button>
-            <button className="btn btn-transparent-secondary btn-sm reply-icon" onClick={() => setShowReplyBox(!showReplyBox)}>
+            <button className="btn btn-transparent-secondary btn-sm reply-icon text-white" onClick={() => setShowReplyBox(!showReplyBox)}>
               <FaReply className='fs-5' />
             </button>
           </div>
@@ -132,11 +132,13 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
             <div className="mt-2">
               <div className='d-flex justify-content-between'>
                 <i className="user-icon bg-orange text-white fw-medium fst-normal">{String(localStorage.getItem("user_id")).charAt(0).toUpperCase()}</i>
-                <input type="text" value={replyText} onChange={(e) => setReplyText(e.target.value)} placeholder="Write a reply..." className="ms-3 form-control" />
+                <input type="text" value={replyText} onChange={(e) => setReplyText(e.target.value)}className="ms-3 form-control bg-transparent text-white" />
+                <style>{`::placeholder{
+                color:white}`}</style>
               </div>
               <div className='d-grid gap-2 d-sm-flex justify-content-sm-end'>
-                <button className="btn btn-transparent mt-2 reply-btns px-3" onClick={() => setShowReplyBox(!showReplyBox)}>Cancel</button>
-                <button onClick={addReply} className="btn btn-transparent px-3 mt-2 reply-btns">Reply</button>
+                <button className="btn btn-transparent mt-2 reply-btns px-3 text-white" onClick={() => setShowReplyBox(!showReplyBox)}>Cancel</button>
+                <button onClick={addReply} className="btn btn-transparent px-3 mt-2 reply-btns text-white">Reply</button>
               </div>
             </div>
           )}
@@ -158,7 +160,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
           {showReplies && (
             <>
               {loadingReplies ? (
-                <p className="ms-4 text-muted">Loading replies...</p>
+                <p className="ms-4 text-white">Loading replies...</p>
               ) : (
 
                 <div className="mt-2 position-relative">
@@ -167,23 +169,23 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
                     {replies.length > 0 ? (
                       replies.map((r, index) => (
                         <>
-                          <li key={index} className="list-group-item">
+                          <li key={index} className="list-group-item" style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)' }}>
                             <div className='d-flex'>
                               <div>
                                 <i className="me-2 user-icon bg-orange text-white fw-medium fst-normal">{r.reply_user_id.charAt(0).toUpperCase()}</i>
                               </div>
                               <div className='flex-grow-1'>
-                                <div className='d-flex justify-content-between'>
-                                  <strong>{r.reply_user_id}</strong>
-                                  <span className="text-muted" style={{ fontSize: "0.9rem" }}>{getTimeDifference(r.reply_id)}</span>
+                                <div className='d-flex justify-content-between text-white'>
+                                  <strong className="text-white">{r.reply_user_id}</strong>
+                                  <span className="text-white" style={{ fontSize: "0.9rem" }}>{getTimeDifference(r.reply_id)}</span>
                                 </div>
-                                <p>{r.reply_text}</p>
+                                <p className="text-white">{r.reply_text}</p>
                                 <div>
                                   <button className="btn btn-transparent-primary btn-sm me-2">
-                                    <LuThumbsUp className='fs-5' />
+                                    <LuThumbsUp className='fs-5 text-white' />
                                   </button>
                                   <button className="btn btn-transparent-danger btn-sm me-2">
-                                    <LuThumbsDown className='fs-5' />
+                                    <LuThumbsDown className='fs-5 text-white' />
                                   </button>
                                 </div>
                               </div>
@@ -192,7 +194,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
                         </>
                       ))
                     ) : (
-                      <p className="ms-4 text-muted">{noRepliesMessage || "No replies yet..."}</p>
+                      <p className="ms-4 text-white">{noRepliesMessage || "No replies yet..."}</p>
                     )}
                   </ul>
                 </div>

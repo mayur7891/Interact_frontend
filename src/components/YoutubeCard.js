@@ -2,26 +2,74 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function YouTubeCard({ video }) {
-
+    // console.log(video.creator_id)
     return (
-        <div className="card" style={{ width: "18rem" }}>
-            <img src="https://marketplace.canva.com/EAEqfS4X0Xw/1/0/1600w/canva-most-attractive-youtube-thumbnail-wK95f3XNRaM.jpg" className="card-img-top" alt="thumbnail" />
-            <div className="card-body">
-                <div className="d-flex align-items-center mb-2">
-                    {/* <img src={video.channelIcon} alt="Channel Icon" className="rounded-circle me-2" style={{ width: "40px", height: "40px" }} /> */}
-                    <h6 className="mb-0">{video.creator_id}</h6>
+        <Link to={`/comments/${video.video_id}`} style={{ textDecoration: "none" }} state={{ creator_id: video.creator_id }}>
+            <div
+                className="card"
+                style={{
+                    width: "20rem",
+                    background: "transparent",
+                    border: "none",
+                    borderRadius: "12px",
+                    color: "white",
+                    boxShadow: "none",
+                    marginTop: "0px",
+                    marginBottom: "0px"
+                }}
+            >
+                {/* 16:9 Thumbnail using Bootstrap ratio */}
+                <div className="ratio ratio-16x9" style={{ borderRadius: "12px", overflow: "hidden" }}>
+                    <img
+                        src={video.thumbnail}
+                        alt="thumbnail"
+                        style={{
+                            objectFit: "cover",
+                            width: "100%",
+                            height: "100%"
+                        }}
+                    />
                 </div>
-                <h5 className="card-title">{video.title}</h5>
-                <p className="card-text text-muted">
-                    {video.description}<br />
-                    3M+ views • {video.duration} mins
-                </p>
-                <Link to={`/comments/${video.video_id}`} className="btn btn-primary" state={{ creator_id: video.creator_id }}>
-                    <i className="fab fa-youtube"></i> Watch Now
-                </Link>
+
+                {/* Spacing between image and text */}
+                <div className="px-2 pt-3 d-flex">
+                    {/* Channel Icon */}
+                    <img
+                        src={video.channelIcon}
+                        alt="Channel Icon"
+                        className="rounded-circle me-2"
+                        style={{ width: "36px", height: "36px" }}
+                    />
+
+                    {/* Video Info */}
+                    <div style={{ maxWidth: "85%" }}>
+                        <h6
+                            className="mb-1 fw-bold text-truncate"
+                            style={{
+                                fontSize: "0.9rem",
+                                color: "white"
+                            }}
+                            title={video.title}
+                        >
+                            {video.title}
+                        </h6>
+                        <p
+                            className="mb-1 text-white-50 small text-truncate"
+                            style={{ fontSize: "0.75rem" }}
+                        >
+                            {video.creator_id}
+                        </p>
+                        <p
+                            className="mb-0 text-white-50 small"
+                            style={{ fontSize: "0.7rem" }}
+                        >
+                            3.1M views • 6 days ago
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }
 
-export default YouTubeCard
+export default YouTubeCard;

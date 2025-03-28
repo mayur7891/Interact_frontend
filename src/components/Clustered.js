@@ -1,27 +1,60 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './clustered.css';
-import { useParams } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
+import { useParams, useLocation } from "react-router-dom";
 import { FaReply } from "react-icons/fa";
 
-const Clustered = () => {
-    const [clusteredComments, setClusteredComments] = useState([]); // Stores unique clusters
-    const [expandedCluster, setExpandedCluster] = useState(null); // Stores which cluster is expanded
-    const [allClusterComments, setAllClusterComments] = useState({}); // Stores all comments of a cluster
-    const { video_id } = useParams();
+import { io } from "socket.io-client";
+const socket = io("https://flask-app-570571842976.asia-south1.run.app");
 
+const Clustered = () => {
+    const [clusteredComments, setClusteredComments] = useState([]);
+    const [expandedCluster, setExpandedCluster] = useState(null);
+    const [allClusterComments, setAllClusterComments] = useState({});
+    const { video_id } = useParams();
     const location = useLocation();
     const creator_id = location.state?.creator_id || "Unknown";
-
     const [showReplyBox, setShowReplyBox] = useState(null);
-    const [showRepliesBox, setShowRepliesBox] = useState(false);
     const [replyText, setReplyText] = useState({});
+    const [loading, setLoading] = useState(true);
 
-    const [allClusterReplies, setAllClusterReplies] = useState([]);
-    const [expanded, setExpanded] = useState(false);
-    const [loading, setLoading] = useState(true)
+    const [alertMessage, setAlertMessage] = useState(null);
+    const [alertType, setAlertType] = useState(null);
 
+
+    useEffect(() => {
+        if (!video_id) return;
+        axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/unique_clusters/${video_id}`)
+            .then((res) => {
+                let clusters = res.data.clusters;
+                let maxCluster = Math.max(...clusters.map(item => item.cluster));
+                let sortedClusters = new Array(maxCluster + 1).fill(undefined);
+                clusters.forEach(item => {
+                    sortedClusters[item.cluster + 1] = item;
+                });
+                setClusteredComments(sortedClusters);
+                setLoading(false);
+            })
+            .catch(() => { });
+    }, [video_id]);
+
+    const fetchClusterComments = async (clusterId) => {
+        try {
+            const res = await axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/cluster/${video_id}/${clusterId}`);
+            setAllClusterComments((prev) => ({ ...prev, [clusterId]: res.data.comments }));
+        } catch (error) { }
+    };
+
+    const handleClusterClick = (clusterId) => {
+        if (expandedCluster === clusterId) {
+            setExpandedCluster(null);
+        } else {
+            setExpandedCluster(clusterId);
+            if (!allClusterComments[clusterId]) {
+                fetchClusterComments(clusterId);
+            }
+        }
+    };
     const handleReplyTextChange = (cluster_no, value) => {
         setReplyText(prev => ({
             ...prev,
@@ -29,101 +62,64 @@ const Clustered = () => {
         }));
     };
 
-    useEffect(() => {
-        if (!video_id) return;
-
-        // Fetch distinct clusters with one comment each
-        axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/unique_clusters/${video_id}`)
-            .then((res) => {
-                // setClusteredComments(res.data.clusters)
-
-                let clusters = res.data.clusters;
-
-                // Find the maximum cluster value to create an array of that size
-                let maxCluster = Math.max(...clusters.map(item => item.cluster));
-
-                // Create an empty array with undefined values of maxCluster + 1 size
-                let sortedClusters = new Array(maxCluster + 1).fill(undefined);
-
-                // Place each item at its respective cluster index
-                clusters.forEach(item => {
-                    sortedClusters[item.cluster + 1] = item;
-                });
-
-                setClusteredComments(sortedClusters);
-                setLoading(false)
-            })
-            .catch((error) => { 
-                // console.error("Error fetching clustered comments:", error) 
-            });
-    }, [video_id]);
-
-    // Function to fetch all comments for a specific cluster
-    const fetchClusterComments = async (clusterId) => {
-        try {
-            const res = await axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/cluster/${video_id}/${clusterId}`);
-            setAllClusterComments((prev) => ({ ...prev, [clusterId]: res.data.comments }));
-        } catch (error) {
-            // console.error("Error fetching cluster comments:", error);
-        }
-    };
-
-    // Toggle to expand/collapse cluster
-    const handleClusterClick = (clusterId) => {
-        if (expandedCluster === clusterId) {
-            setExpandedCluster(null); // Collapse if clicked again
-        } else {
-            setExpandedCluster(clusterId);
-            if (!allClusterComments[clusterId]) {
-                fetchClusterComments(clusterId); // Fetch comments if not already loaded
-            }
-        }
-    };
-
-    useEffect(() => {
-        axios.get(`https://flask-app-570571842976.us-central1.run.app/ml/get_all_cluster_replies/${video_id}/${String(creator_id)}`)
-            .then((res) => {
-                const clusteredReplies = new Map(res.data.map(item => [item.cluster_no, item.replies]));
-                setAllClusterReplies(clusteredReplies);
-            })
-            .catch((err) => {
-                // console.log(err);
-            })
-    }, [creator_id, video_id]);
-
-    // console.log((allClusterReplies.get(41))[0].reply_text)
-
-    const addReply = (cluster_no) => {
+    const addReply = async (cluster_no) => {
         if (!replyText[cluster_no]?.trim()) return;
 
-        const newReply = {
-            reply_text: replyText[cluster_no],
-            creator_id: creator_id
-        };
+        try {
+            // Fetch all comments in the cluster
+            const res = await axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/cluster/${video_id}/${cluster_no}`);
 
-        axios.post(`https://flask-app-570571842976.us-central1.run.app/ml/reply_cluster/${video_id}/${cluster_no}`, newReply)
-            .then((res) => {
-                if (res.data.message) {
-                    setAllClusterReplies(prev => {
-                        const newMap = new Map(prev);
-                        const updatedReplies = [...(newMap.get(cluster_no) || []), {
-                            reply_text: newReply.reply_text,
-                            timestamp: new Date().toISOString()
-                        }];
-                        newMap.set(cluster_no, updatedReplies);
-                        return newMap;
-                    });
-                    setReplyText(prev => ({ ...prev, [cluster_no]: "" })); // Clear input for that cluster
+            if (!res.data || !Array.isArray(res.data.comments)) {
+                // console.error("Invalid response format:", res.data);
+                return;
+            }
+
+            const newReplies = res.data.comments.map(comment => ({
+                comment_id: comment._id,  // Use individual comment ID
+                reply_user_id: creator_id,
+                reply_text: replyText[cluster_no]
+            }));
+
+            // Send all replies in parallel
+            const replyPromises = newReplies.map(newReply =>
+                axios.post(`https://flask-app-570571842976.asia-south1.run.app/comments/${newReply.comment_id}/reply`, newReply)
+            );
+
+            const responses = await Promise.all(replyPromises);
+            let successCount = responses.filter(response => response.data.success).length;
+
+            if (successCount === newReplies.length) {
+                setAlertMessage("Replies added successfully!");
+                setAlertType("success");
+            } else {
+                setAlertMessage("Some replies failed to post!");
+                setAlertType("danger");
+            }
+
+            setTimeout(() => setAlertMessage(null), 3000);  
+
+
+            // Emit socket events for successful replies
+            responses.forEach(response => {
+                if (response.data.success) {
+                    socket.emit("new_reply", response.data.reply);
                 }
-            })
-            .catch((err) => {
-                // console.error("Error posting reply:", err);
             });
+
+            // Clear the input field after replying
+            setReplyText(prev => ({ ...prev, [cluster_no]: "" }));
+
+        } catch (err) {
+            // console.error("Error posting replies:", err);
+            setAlertMessage("Error posting replies!");
+            setAlertType("danger");
+            setTimeout(() => setAlertMessage(null), 3000);
+        }
     };
 
     const handleClustering = () => {
         setLoading(true)
-        axios.get(`https://flask-app-570571842976.us-central1.run.app/ml/get_clusters/${video_id}`)
+        axios.get(`https://flask-app-570571842976.asia-south1.run.app/ml/get_clusters/${video_id}`)
             .then((res) => {
                 if (res.data.message) {
                     // console.log(res.data);
@@ -136,9 +132,17 @@ const Clustered = () => {
             })
     };
 
+
     return (
-        <div className="container mt-4 bg-white">
-            <h2>Clustered Comments <button type="button" class="btn btn-info" onClick={handleClustering}>CLUSTER IT</button></h2>
+        <div className="container mt-4" style={{ backgroundColor: "transparent", color: "white" }}>
+
+            <h2 className="text-white">Clustered Comments <button type="button" class="btn btn-info bg-transparent text-white" onClick={handleClustering}>CLUSTER IT</button></h2>
+            {alertMessage && (
+                <div className={`alert alert-${alertType} alert-dismissible fade show`} role="alert">
+                    {alertMessage}
+                </div>
+            )}
+
             {loading ? (
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "150px" }}>
                     <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
@@ -146,26 +150,17 @@ const Clustered = () => {
                     </div>
                 </div>
             ) : (
+                
                 clusteredComments.map((cluster, index) => (
-                    <div key={index}
-                        className={`cluster-card list-unstyled mt-3 p-1 align-items-center w-100 ${expandedCluster === cluster.cluster ? "cluster-clicked" : ""}`}
-                    >
-
+                    <div key={index} className="cluster-card list-unstyled mt-3 p-1 align-items-center w-100">
                         <div className="cluster-header d-flex justify-content-between align-items-center w-100">
-                            <div className="abc">
+                            <div>
                                 <strong>{cluster.cluster === -1 ? "Miscellaneous" : `Cluster ${cluster.cluster}`}</strong>
-                                <p className="mt-1">
-                                    {expanded ? cluster.comment.comment : cluster.comment.comment.substring(0, 100)}
-                                    {cluster.comment.comment.length > 100 && (
-                                        <span className="text-primary ms-1" style={{ cursor: "pointer" }} onClick={() => setExpanded(!expanded)}>
-                                            {expanded ? "Read less" : "Read more"}
-                                        </span>
-                                    )}
-                                </p>
+                                <p className="mt-1 text-white">{cluster.comment.comment}</p>
                             </div>
                             <div>
-                                {cluster.cluster !== -1 && creator_id === localStorage.getItem('user_id') && (
-                                    <button className="btn btn-transparent-secondary btn-sm reply-icon"
+                                {cluster.cluster !== -1 && creator_id === localStorage.getItem("user_id") && (
+                                    <button className="btn btn-transparent text-white reply-icon"
                                         onClick={() => {
                                             if (cluster.cluster === showReplyBox) {
                                                 setShowReplyBox(null);
@@ -178,33 +173,11 @@ const Clustered = () => {
                                         <FaReply className='fs-5' />
                                     </button>
                                 )}
-                                <button className='btn btn-transparent arrow-btn'
-                                    onClick={() => handleClusterClick(cluster.cluster)}>
-                                    <div className="d-flex align-items-center mx-1">
-                                        {expandedCluster === cluster.cluster ? <i className="bi bi-chevron-up me-1" /> : <i className="bi bi-chevron-down me-1" />}
-                                        {/* <i className="bi bi-chevron-down me-1"/> */}
-                                        Comments
-                                    </div>
-                                </button>
-                                <button className='btn btn-transparent arrow-btn'
-                                    onClick={() => {
-                                        if (cluster.cluster === showRepliesBox) {
-                                            setShowRepliesBox(null)
-                                        }
-                                        else {
-                                            setShowRepliesBox(cluster.cluster)
-                                        }
-                                    }
-                                    }>
-                                    <div className="d-flex align-items-center mx-1">
-                                        {showRepliesBox === cluster.cluster ? <i className="bi bi-chevron-up me-1" /> : <i className="bi bi-chevron-down me-1" />}
-                                        {/* <i className="bi bi-chevron-down me-1"/> */}
-                                        Replies
-                                    </div>
+                                <button className='btn btn-transparent text-white' onClick={() => handleClusterClick(cluster.cluster)}>
+                                    {expandedCluster === cluster.cluster ? "Hide" : "Show"} Comments
                                 </button>
                             </div>
                         </div>
-
                         {showReplyBox === cluster.cluster && (
                             <div className="m-2">
                                 <div className='d-flex justify-content-between'>
@@ -214,12 +187,12 @@ const Clustered = () => {
                                         value={replyText[cluster.cluster] || ""}
                                         onChange={(e) => handleReplyTextChange(cluster.cluster, e.target.value)}
                                         placeholder="Write a reply..."
-                                        className="ms-3 form-control"
+                                        className="ms-3 form-control bg-transparent text-white custom-placeholder"
                                     />
                                 </div>
                                 <div className='d-grid gap-2 d-sm-flex justify-content-sm-end'>
-                                    <button className="btn btn-transparent mt-2 reply-btns px-3" onClick={() => setShowReplyBox(null)}>Cancel</button>
-                                    <button onClick={() => addReply(cluster.cluster)} className="btn btn-transparent px-3 mt-2 reply-btns">Reply</button>
+                                    <button className="btn btn-transparent mt-2 reply-btns px-3 text-white" onClick={() => setShowReplyBox(null)}>Cancel</button>
+                                    <button onClick={() => addReply(cluster.cluster)} className="btn btn-transparent px-3 mt-2 reply-btns text-white">Reply</button>
                                 </div>
                             </div>
                         )}
@@ -229,32 +202,18 @@ const Clustered = () => {
                             <ul className="list-group">
                                 {allClusterComments[cluster.cluster] ? (
                                     allClusterComments[cluster.cluster].map((comment, idx) => (
-                                        <li className="list-group-item" key={idx}>
+                                        <li className="list-group-item text-white" key={idx} style={{ backgroundColor: "transparent", border: "none" }}>
                                             <strong>{comment.user_id}:</strong> {comment.comment}
                                         </li>
                                     ))
                                 ) : (
-                                    <li className="list-group-item">Loading Comments...</li>
+                                    <li className="list-group-item text-white" style={{ backgroundColor: "transparent", border: "none" }}>Loading Comments...</li>
                                 )}
                             </ul>
                         )}
-
-                        {showRepliesBox === cluster.cluster && (
-                            <ul className="list-group">
-                                {allClusterReplies.get(cluster.cluster) ? (
-                                    allClusterReplies.get(cluster.cluster).map((reply, idx) => (
-                                        <li className="list-group-item" key={idx}>
-                                            <strong>{creator_id}:</strong> {reply.reply_text}
-                                        </li>
-                                    ))
-                                ) : (
-                                    <li className="list-group-item">No Reply Added Yet!</li>)
-                                }
-                            </ul>
-                        )}
-
                     </div>
-                )))}
+                ))
+            )}
         </div>
     );
 };

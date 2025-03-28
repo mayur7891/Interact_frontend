@@ -14,3 +14,13 @@
     box-shadow: 0px 0px 5px 3px rgba(0, 102, 255, 0.4); /* Outer glow */
     transition: box-shadow 0.3s ease-in-out; /* Smooth effect */
 }
+
+.reply-btns:hover {
+    background: rgba(255, 255, 255);
+    color: black !important;
+}
+
+
+.custom-placeholder::placeholder {
+    color: white;
+}

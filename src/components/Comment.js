@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import { motion } from "framer-motion";
 import { FaPaperPlane } from "react-icons/fa";
 
-const socket = io("https://flask-app-570571842976.us-central1.run.app");
+const socket = io("https://flask-app-570571842976.asia-south1.run.app");
 
 const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
     const [expanded, setExpanded] = useState(false);
@@ -23,7 +23,7 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
         if (loadingReplies || showReplies) return;
 
         setLoadingReplies(true);
-        axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${_id}/replies`)
+        axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/${_id}/replies`)
             .then((res) => {
                 const fetchedReplies = res.data || [];
                 if (fetchedReplies.message) {
@@ -53,7 +53,7 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
             reply_text: replyText
         };
 
-        axios.post(`https://flask-app-570571842976.us-central1.run.app/comments/${_id}/reply`, newReply)
+        axios.post(`https://flask-app-570571842976.asia-south1.run.app/comments/${_id}/reply`, newReply)
             .then((res) => {
                 if (res.data.success) {
                     setReplies((prev) => (Array.isArray(prev) ? [...prev, res.data.reply] : [res.data.reply]));
@@ -106,11 +106,11 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
                 <div className="profile-icon">{user_id.charAt(0).toUpperCase()}</div>
                 <div className="flex-grow-1 ms-2">
                     <div className="d-flex justify-content-between align-items-center">
-                        <h6 className="fw-bold text-dark mb-0 small">{user_id} {`(Cluster ${cluster})`}</h6>
-                        <small className="text-muted">{getTimeDifference(timestamp)}</small>
+                        <h6 className="fw-bold text-white mb-0 small">{user_id}</h6>
+                        <small className="text-white">{getTimeDifference(timestamp)}</small>
                     </div>
 
-                    <p className="mt-1 mb-1 text-dark small">
+                    <p className="mt-1 mb-1 text-white small">
                         {expanded ? comment : `${comment.slice(0, 100)}${comment.length > 100 ? "..." : ""}`}
                         {comment.length > 100 && (
                             <span
@@ -141,9 +141,9 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.4 }}
-                            className="mt-2"
+                            className="mt-2 bg-transparent"
                         >
-                            <div className="d-flex align-items-center my-2">
+                            {/* <div className="d-flex align-items-center my-2">
                                 <input
                                     type="text"
                                     className="form-control form-control-sm rounded-pill"
@@ -157,9 +157,9 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
                                     onClick={addReply}
                                     style={{ cursor: "pointer" }}
                                 />
-                            </div>
+                            </div> */}
                             {loadingReplies ? (
-                                <p className="ms-4 text-muted">Loading replies...</p>
+                                <p className="ms-4 text-white">Loading replies...</p>
                             ) : (
                                 <>
                                     {replies.length > 0 ? (
@@ -169,20 +169,20 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
                                                 initial={{ opacity: 0, x: -10 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ duration: 0.3 }}
-                                                className="reply-card p-2 mb-2 rounded"
+                                                className="reply-card p-2 mb-2 rounded bg-transparent"
                                             >
                                                 <div className="d-flex align-items-center">
                                                     <div className="profile-icon">
                                                         {r.reply_user_id ? r.reply_user_id.charAt(0).toUpperCase() : "?"}
                                                     </div>
-                                                    <h6 className="fw-bold text-dark mb-0 small ms-2">{r.reply_username || r.reply_user_id}</h6>
+                                                    <h6 className="fw-bold text-white mb-0 small ms-2">{r.reply_username || r.reply_user_id}</h6>
                                                 </div>
-                                                <p className="mt-1 mb-0 text-dark small">{r.reply_text}</p>
-                                                <small className="text-muted">{getTimeDifference(r.reply_id)}</small>
+                                                <p className="mt-1 mb-0 text-white small">{r.reply_text}</p>
+                                                <small className="text-white">{getTimeDifference(r.reply_id)}</small>
                                             </motion.div>
                                         ))
                                     ) : (
-                                        <p className="ms-4 text-muted">{noRepliesMessage || "No replies yet..."}</p>
+                                        <p className="ms-4 text-white">{noRepliesMessage || "No replies yet..."}</p>
                                     )}
                                 </>
                             )}

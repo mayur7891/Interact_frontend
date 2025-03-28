@@ -1,0 +1,59 @@
+.sentiment-container {
+    max-width: 100%;
+    padding: 20px;
+    background: transparent;
+}
+
+.sentiment-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 20px;
+    background: linear-gradient(90deg, #ff8c00, #ff0080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Ensure progress bar container uses full width */
+.progress-bar-container {
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+    text-align: left;
+}
+
+.progress-bar-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #fff;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .chart-container {
+        margin-bottom: 20px;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+    }
+}

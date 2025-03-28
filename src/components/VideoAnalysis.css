@@ -1,0 +1,39 @@
+/* Ensures the main container takes full width */
+.video-analysis-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    padding: 50px;
+    width: 100vw;
+    /* Takes full viewport width */
+    max-width: 100%;
+}
+
+/* Ensures each section stretches across full width */
+.analysis-section {
+    width: 90%;
+    /* Adjust this for responsiveness */
+    max-width: 1600px;
+    /* Increased for larger screens */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    min-height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive width adjustments */
+@media (max-width: 768px) {
+    .video-analysis-container {
+        padding: 20px;
+    }
+
+    .analysis-section {
+        width: 100%;
+        min-height: 300px;
+    }
+}

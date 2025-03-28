@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import './App.css'
 // import CommentSection from "./components/CommentSection";
 import LoginSignup from "./components/LoginSingup";
 import YoutubeCard from "./components/YoutubeCard";
@@ -17,8 +17,11 @@ import DisplayVideo from "./components/DisplayVideo";
 import CommentTest from "./components/CommentCard";
 import TestLogin from "./components/TestLogin";
 import About from "./components/About";
+import PaginationTest from "./components/PaginationTest";
 
-
+import Dashboard from "./components/Dashboard";
+import VideoAnalysis from "./components/VideoAnalysis";
+import Assistant from "./components/Assistant";
 function App() {
   const videoData = {
     thumbnail: "https://i.ytimg.com/vi/cnNMo4u0L4M/hq720.jpg",
@@ -35,20 +38,23 @@ function App() {
       <Routes>
         <Route path="/login" element={<TestLogin />} />
         <Route path="/about" element={<About />} />
-     
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/analysis/:video_id" element={<VideoAnalysis />} />
+        <Route path="/assistant" element={<Assistant />} />
+
         <Route path="/" element={<Banner />} />
         <Route path="/display" element={<DisplayVideo />} />
         <Route path="/commenttest" element={<CommentTest />} />
         <Route path="/videos" element={<VideoList />} />
-        {/* <Route path="/test/:video_id" element={<Test />} /> */}
+        <Route path="/test/:video_id" element={<PaginationTest />} />
         <Route path="/videocard" element={<YoutubeCard video={videoData}></YoutubeCard>}></Route>
-        <Route exact path='/comments/:video_id' element={<Tab/>}>
-          <Route index element={<Test/>}></Route>
-          <Route exact path="/comments/:video_id/allcomments" element={<Test/>}></Route>
-          <Route exact path="/comments/:video_id/clusters" element={<Clustered/>}></Route>
-          <Route exact path="/comments/:video_id/chatbot" element={<Chatbot/>}></Route>
-          <Route exact path="/comments/:video_id/sentiment" element={<SentimentChart/>}></Route>
-          <Route exact path="/comments/:video_id/your_comments" element={<YourReply/>}></Route>
+        <Route exact path='/comments/:video_id' element={<Tab />}>
+          <Route index element={<Test />}></Route>
+          <Route exact path="/comments/:video_id/allcomments" element={<Test />}></Route>
+          <Route exact path="/comments/:video_id/clusters" element={<Clustered />}></Route>
+          <Route exact path="/comments/:video_id/chatbot" element={<Chatbot />}></Route>
+          <Route exact path="/comments/:video_id/sentiment" element={<SentimentChart />}></Route>
+          <Route exact path="/comments/:video_id/your_comments" element={<YourReply />}></Route>
         </Route>
       </Routes>
     </Router>

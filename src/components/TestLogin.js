@@ -61,7 +61,7 @@ const TestLogin = () => {
 
         try {
             if (isLogin) {
-                const res = await axios.post("https://flask-app-570571842976.us-central1.run.app/auth/login", {
+                const res = await axios.post("https://flask-app-570571842976.asia-south1.run.app/auth/login", {
                     user_name: formData.username,
                     password: formData.password,
                 });
@@ -69,7 +69,7 @@ const TestLogin = () => {
                 localStorage.setItem("user_id", res.data.user_id);
                 navigate("/videos");
             } else {
-                await axios.post("https://flask-app-570571842976.us-central1.run.app/auth/register", {
+                await axios.post("https://flask-app-570571842976.asia-south1.run.app/auth/register", {
                     user_name: formData.username,
                     password: formData.password,
                     isCreator: true,
@@ -83,7 +83,7 @@ const TestLogin = () => {
     };
 
     return (
-        <div className="custom-container" style={{ backgroundColor: 'rgb(249, 250, 251)' }}>
+        <div className="custom-container" style={{ backgroundColor:'transparent' }}>
             <AnimatePresence>
                 {error && (
                     <motion.div
@@ -97,44 +97,49 @@ const TestLogin = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="custom-form-wrapper">
-                <div className="custom-form-box">
-                    <h2>{isLogin ? "Login" : "Sign Up"}</h2>
+            <div className="custom-form-wrapper ">
+                <div className="custom-form-box bg-transparent">
+                    <h2 className="text-white">{isLogin ? "Login" : "Sign Up"}</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="custom-form-group">
-                            <label>Username</label>
+                            <label className="text-white">Username</label>
                             <input
                                 type="text"
-                                className="custom-input"
+                                className="custom-input text-white bg-transparent"
                                 name="username"
                                 value={formData.username}
                                 onChange={handleChange}
                                 placeholder={placeholderText}
                                 required
                             />
+
                         </div>
                         <div className="custom-form-group">
-                            <label>Password</label>
+                            <label className="text-white">Password</label>
                             <input
                                 type="password"
-                                className="custom-input"
+                                className="custom-input bg-transparent text-white"
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 required
                             />
+                            <style>{`::placeholder{
+                                color:white}`}</style>
                         </div>
                         {!isLogin && (
                             <div className="custom-form-group">
-                                <label>Confirm Password</label>
+                                <label className="text-white">Confirm Password</label>
                                 <input
                                     type="password"
-                                    className="custom-input"
+                                    className="custom-input text-white bg-transparent"
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
                                     required
                                 />
+                                <style>{`::placeholder{
+                                color:white}`}</style>
                             </div>
                         )}
                         <button type="submit" className="custom-button">

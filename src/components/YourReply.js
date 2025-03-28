@@ -13,7 +13,7 @@ const YourReply = () => {
   useEffect(() => {
     setLoading(true); // Show loader before fetching comments
 
-    axios.get(`https://flask-app-570571842976.us-central1.run.app/comments/${user_id}/${video_id}`)
+    axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/${user_id}/${video_id}`)
       .then((res) => {
         if (res.data.success) {
           setTimeout(() => {
