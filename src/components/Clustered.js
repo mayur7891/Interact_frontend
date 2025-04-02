@@ -27,16 +27,21 @@ const Clustered = () => {
         axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/unique_clusters/${video_id}`)
             .then((res) => {
                 let clusters = res.data.clusters;
-                let maxCluster = Math.max(...clusters.map(item => item.cluster));
-                let sortedClusters = new Array(maxCluster + 1).fill(undefined);
+                // let maxCluster = Math.max(...clusters.map(item => item.cluster));
+                // let sortedClusters = new Array(maxCluster + 1).fill({});
+                let minCluster = Math.min(...clusters.map(item => item.cluster)); // Get the minimum cluster index
+                let maxCluster = Math.max(...clusters.map(item => item.cluster)); // Get the maximum cluster index
+
+                let sortedClusters = new Array(maxCluster - minCluster + 1).fill(null);
                 clusters.forEach(item => {
                     sortedClusters[item.cluster + 1] = item;
                 });
                 setClusteredComments(sortedClusters);
                 setLoading(false);
+                console.log(sortedClusters)
             })
             .catch(() => { });
-    }, [video_id]);
+    }, [video_id, loading]);
 
     const fetchClusterComments = async (clusterId) => {
         try {
@@ -96,7 +101,7 @@ const Clustered = () => {
                 setAlertType("danger");
             }
 
-            setTimeout(() => setAlertMessage(null), 3000);  
+            setTimeout(() => setAlertMessage(null), 3000);
 
 
             // Emit socket events for successful replies
@@ -150,9 +155,9 @@ const Clustered = () => {
                     </div>
                 </div>
             ) : (
-                
-                clusteredComments.map((cluster, index) => (
-                    <div key={index} className="cluster-card list-unstyled mt-3 p-1 align-items-center w-100">
+
+                clusteredComments.filter(cluster => cluster !== null).map((cluster, index) => (
+                    <div div key={index} className="cluster-card list-unstyled mt-3 p-1 align-items-center w-100" >
                         <div className="cluster-header d-flex justify-content-between align-items-center w-100">
                             <div>
                                 <strong>{cluster.cluster === -1 ? "Miscellaneous" : `Cluster ${cluster.cluster}`}</strong>
@@ -212,9 +217,11 @@ const Clustered = () => {
                             </ul>
                         )}
                     </div>
+
+
                 ))
             )}
-        </div>
+        </div >
     );
 };
 
