@@ -5,7 +5,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { FaReply } from "react-icons/fa";
 
 import { io } from "socket.io-client";
-const socket = io("https://flask-app-570571842976.asia-south1.run.app");
+const socket = io("https://flask-app-993257609003.us-central1.run.app/");
 
 const Clustered = () => {
     const [clusteredComments, setClusteredComments] = useState([]);
@@ -24,7 +24,7 @@ const Clustered = () => {
 
     useEffect(() => {
         if (!video_id) return;
-        axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/unique_clusters/${video_id}`)
+        axios.get(`https://flask-app-993257609003.us-central1.run.app/comments/unique_clusters/${video_id}`)
             .then((res) => {
                 let clusters = res.data.clusters;
                 // let maxCluster = Math.max(...clusters.map(item => item.cluster));
@@ -45,7 +45,7 @@ const Clustered = () => {
 
     const fetchClusterComments = async (clusterId) => {
         try {
-            const res = await axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/cluster/${video_id}/${clusterId}`);
+            const res = await axios.get(`https://flask-app-993257609003.us-central1.run.app/comments/cluster/${video_id}/${clusterId}`);
             setAllClusterComments((prev) => ({ ...prev, [clusterId]: res.data.comments }));
         } catch (error) { }
     };
@@ -72,7 +72,7 @@ const Clustered = () => {
 
         try {
             // Fetch all comments in the cluster
-            const res = await axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/cluster/${video_id}/${cluster_no}`);
+            const res = await axios.get(`https://flask-app-993257609003.us-central1.run.app/comments/cluster/${video_id}/${cluster_no}`);
 
             if (!res.data || !Array.isArray(res.data.comments)) {
                 // console.error("Invalid response format:", res.data);
@@ -87,7 +87,7 @@ const Clustered = () => {
 
             // Send all replies in parallel
             const replyPromises = newReplies.map(newReply =>
-                axios.post(`https://flask-app-570571842976.asia-south1.run.app/comments/${newReply.comment_id}/reply`, newReply)
+                axios.post(`https://flask-app-993257609003.us-central1.run.app/comments/${newReply.comment_id}/reply`, newReply)
             );
 
             const responses = await Promise.all(replyPromises);
@@ -124,7 +124,7 @@ const Clustered = () => {
 
     const handleClustering = () => {
         setLoading(true)
-        axios.get(`https://flask-app-570571842976.asia-south1.run.app/ml/get_clusters/${video_id}`)
+        axios.get(`https://flask-app-993257609003.us-central1.run.app/ml/get_clusters/${video_id}`)
             .then((res) => {
                 if (res.data.message) {
                     // console.log(res.data);

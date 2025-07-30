@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Comment from "./Comment";
 import './commentsection.css';
 
-const socket = io("https://flask-app-570571842976.asia-south1.run.app");
+const socket = io("https://flask-app-993257609003.us-central1.run.app/");
 
 function CommentSection() {
     const [comment, setComment] = useState("");
@@ -16,7 +16,7 @@ function CommentSection() {
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`https://flask-app-570571842976.asia-south1.run.app/comments/${video_id}/comments`)
+        axios.get(`https://flask-app-993257609003.us-central1.run.app/comments/${video_id}/comments`)
             .then((res) => {
                 // console.log("Comments fetched:", res.data);
                 setComments(res.data);
@@ -56,7 +56,7 @@ function CommentSection() {
             video_id,
         };
 
-        axios.post(`https://flask-app-570571842976.asia-south1.run.app/comments/${video_id}/add`, newComment)
+        axios.post(`https://flask-app-993257609003.us-central1.run.app/comments/${video_id}/add`, newComment)
             .then((res) => {
                 if (res.data.success) {
                     setComment("");

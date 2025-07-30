@@ -28,7 +28,7 @@ const Dashboard = () => {
         const fetchVideos = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("https://flask-app-570571842976.asia-south1.run.app/video/videos");
+                const response = await axios.get("https://flask-app-993257609003.us-central1.run.app/video/videos");
                 const filteredVideos = response.data.filter(video => video.creator_id === userId);
 
                 // Assigning thumbnails and logos based on video_id

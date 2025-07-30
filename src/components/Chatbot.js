@@ -20,7 +20,7 @@ const Chatbot = () => {
     setNotFound(false);
     setMatchedComments([]);
 
-    axios.post(`https://flask-app-570571842976.asia-south1.run.app/ml/test-chatbot/${video_id}`, { query })
+    axios.post(`https://flask-app-993257609003.us-central1.run.app/ml/test-chatbot/${video_id}`, { query })
       .then((res) => {
         if (res.data.length > 0) {
           setMatchedComments(res.data);
