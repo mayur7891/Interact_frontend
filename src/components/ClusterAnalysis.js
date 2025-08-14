@@ -17,7 +17,7 @@ const ClusterAnalysis = ({ video_id }) => {
     const fetchClusterComments = async (clusterId) => {
         try {
             const res = await axios.get(
-                `https://flask-app-993257609003.us-central1.run.app/comments/cluster/${video_id}/${clusterId}`
+                `https://flask-app-993257609003.asia-south1.run.app/comments/cluster/${video_id}/${clusterId}`
             );
             
             return res.data.comments || [];
@@ -33,7 +33,7 @@ const ClusterAnalysis = ({ video_id }) => {
         if (!video_id) return;
 
         axios
-            .get(`https://flask-app-993257609003.us-central1.run.app/comments/unique_clusters/${video_id}`)
+            .get(`https://flask-app-993257609003.asia-south1.run.app/comments/unique_clusters/${video_id}`)
             .then(async (res) => {
                 if (!res.data || !Array.isArray(res.data.clusters)) {
                     setLoading(false);

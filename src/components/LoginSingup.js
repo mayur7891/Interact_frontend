@@ -14,7 +14,7 @@ function LoginSignup() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("https://flask-app-993257609003.us-central1.run.app/auth/login", { user_name, password });
+            const res = await axios.post("https://flask-app-993257609003.asia-south1.run.app/auth/login", { user_name, password });
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user_id", res.data.user_id);
             // console.log(res)
@@ -32,7 +32,7 @@ function LoginSignup() {
             return;
         }
         try {
-            await axios.post("https://flask-app-993257609003.us-central1.run.app/auth/register", { user_name, password, isCreator});
+            await axios.post("https://flask-app-993257609003.asia-south1.run.app/auth/register", { user_name, password, isCreator});
             navigate("/");
         } catch (error) {
             alert("Signup Failed");

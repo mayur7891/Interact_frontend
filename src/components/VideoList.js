@@ -30,7 +30,7 @@ const VideoList = () => {
             setLoading(true);
             try {
                 const response = await axios.get(
-                    "https://flask-app-993257609003.us-central1.run.app/video/videos"
+                    "https://flask-app-993257609003.asia-south1.run.app/video/videos"
                 );
                 // Simulate a slight delay for demonstration
                 setTimeout(() => {

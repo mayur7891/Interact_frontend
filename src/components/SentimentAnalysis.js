@@ -19,7 +19,7 @@ const SentimentAnalysis = ({ video_id }) => {
     useEffect(() => {
         const fetchSentimentData = async () => {
             try {
-                const response = await fetch(`https://flask-app-993257609003.us-central1.run.app/ml/sentiment/${video_id}`);
+                const response = await fetch(`https://flask-app-993257609003.asia-south1.run.app/ml/sentiment/${video_id}`);
                 if (!response.ok) throw new Error("No sentiment data found");
 
                 const data = await response.json();

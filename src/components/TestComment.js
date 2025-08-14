@@ -9,7 +9,7 @@ import { LuThumbsDown, LuThumbsUp } from "react-icons/lu";
 import "./testcomment.css";
 import { FaReply } from 'react-icons/fa';
 
-const socket = io("https://flask-app-993257609003.us-central1.run.app/");
+const socket = io("https://flask-app-993257609003.asia-south1.run.app/");
 
 const TestComment = ({ _id, user_id, comment, timestamp }) => {
   const [expanded, setExpanded] = useState(false);
@@ -32,7 +32,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
     if (loadingReplies || showReplies) return;
 
     setLoadingReplies(true);  // Set loading state
-    axios.get(`https://flask-app-993257609003.us-central1.run.app/comments/${_id}/replies`)
+    axios.get(`https://flask-app-993257609003.asia-south1.run.app/comments/${_id}/replies`)
       .then((res) => {
         const fetchedReplies = res.data || [];
         if (fetchedReplies.message) {
@@ -60,7 +60,7 @@ const TestComment = ({ _id, user_id, comment, timestamp }) => {
       reply_text: replyText
     };
 
-    axios.post(`https://flask-app-993257609003.us-central1.run.app/comments/${_id}/reply`, newReply)
+    axios.post(`https://flask-app-993257609003.asia-south1.run.app/comments/${_id}/reply`, newReply)
       .then((res) => {
         if (res.data.success) {
           // setReplies((prev) => [...prev, res.data.reply]); // Update replies immediately

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io("https://flask-app-993257609003.us-central1.run.app/");
+const socket = io("https://flask-app-993257609003.asia-south1.run.app/");
 const API_KEY = "AIzaSyDeQwjklidMRCb9dubHg52mbJGG_KxQfYk";
 
 const Test = () => {
@@ -17,7 +17,7 @@ const Test = () => {
   useEffect(() => {
     setLoading(true);
 
-    axios.get(`https://flask-app-993257609003.us-central1.run.app/comments/${video_id}/comments`)
+    axios.get(`https://flask-app-993257609003.asia-south1.run.app/comments/${video_id}/comments`)
       .then((res) => {
         setTimeout(() => {
           setComments(res.data);
@@ -56,7 +56,7 @@ const Test = () => {
 
     try {
       const res = await axios.post(
-        `https://flask-app-993257609003.us-central1.run.app/comments/${video_id}/add`,
+        `https://flask-app-993257609003.asia-south1.run.app/comments/${video_id}/add`,
         newComment
       );
 
@@ -70,13 +70,13 @@ const Test = () => {
 
   const updateSummary = async (newCommentText) => {
     try {
-      const existingSummaryRes = await axios.get(`https://flask-app-993257609003.us-central1.run.app/ml/getsummary/${video_id}`);
+      const existingSummaryRes = await axios.get(`https://flask-app-993257609003.asia-south1.run.app/ml/getsummary/${video_id}`);
       const existingSummary = existingSummaryRes.data?.summary || "";
 
       const newSummary = await generateSummary(existingSummary, newCommentText);
       // console.log(newSummary)
 
-      await axios.put(`https://flask-app-993257609003.us-central1.run.app/ml/update-summary/${video_id}`, { summary: newSummary });
+      await axios.put(`https://flask-app-993257609003.asia-south1.run.app/ml/update-summary/${video_id}`, { summary: newSummary });
     } catch (error) {
       // console.error("Error updating summary:", error);
     }

@@ -16,7 +16,7 @@ const Assistant = ({ video_id }) => {
     // Fetch summary from database
     const fetchSummary = async () => {
         try {
-            const response = await axios.get(`https://flask-app-993257609003.us-central1.run.app/ml/getsummary/${video_id}`);
+            const response = await axios.get(`https://flask-app-993257609003.asia-south1.run.app/ml/getsummary/${video_id}`);
             setSummary(response.data?.summary || "No summary available.");
         } catch (error) {
             // console.error("Error fetching summary:", error);

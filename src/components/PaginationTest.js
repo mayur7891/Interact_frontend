@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const socket = io(" https://flask-app-993257609003.us-central1.run.app/");
+const socket = io(" https://flask-app-993257609003.asia-south1.run.app/");
 
 const PaginationTest = () => {
     const [comment, setComment] = useState("");
@@ -22,7 +22,7 @@ const PaginationTest = () => {
 
         setLoading(true);
         try {
-            let url = `https://flask-app-993257609003.us-central1.run.app/comments/${video_id}/comments?limit=10`;
+            let url = `https://flask-app-993257609003.asia-south1.run.app/comments/${video_id}/comments?limit=10`;
             if (lastCommentId) url += `&last_comment_id=${lastCommentId}`;
 
             const response = await axios.get(url);
@@ -74,7 +74,7 @@ const PaginationTest = () => {
         const newComment = { user_id, comment_text: comment, video_id };
 
         try {
-            const res = await axios.post(`https://flask-app-993257609003.us-central1.run.app/comments/${video_id}/add`, newComment);
+            const res = await axios.post(`https://flask-app-993257609003.asia-south1.run.app/comments/${video_id}/add`, newComment);
             if (res.data.success) {
                 setComment(""); // WebSocket will handle UI update
             }

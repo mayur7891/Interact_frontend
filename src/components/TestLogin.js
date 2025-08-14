@@ -61,7 +61,7 @@ const TestLogin = () => {
 
         try {
             if (isLogin) {
-                const res = await axios.post("https://flask-app-993257609003.us-central1.run.app/auth/login", {
+                const res = await axios.post("https://flask-app-993257609003.asia-south1.run.app/auth/login", {
                     user_name: formData.username,
                     password: formData.password,
                 });
@@ -69,7 +69,7 @@ const TestLogin = () => {
                 localStorage.setItem("user_id", res.data.user_id);
                 navigate("/videos");
             } else {
-                await axios.post("https://flask-app-993257609003.us-central1.run.app/auth/register", {
+                await axios.post("https://flask-app-993257609003.asia-south1.run.app/auth/register", {
                     user_name: formData.username,
                     password: formData.password,
                     isCreator: true,
