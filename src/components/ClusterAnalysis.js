@@ -22,7 +22,7 @@ const ClusterAnalysis = ({ video_id }) => {
             
             return res.data.comments || [];
         } catch (error) {
-            // console.error(`Error fetching comments for cluster ${clusterId}:`, error);
+            // console.error(error);
             return [];
         }
     };
@@ -133,17 +133,17 @@ const ClusterAnalysis = ({ video_id }) => {
                                     legend: {
                                         display: true,
                                         position: "top",
-                                        labels: { color: "white" } // Changed legend text color to white
+                                        labels: { color: "white" }
                                     },
                                     tooltip: { enabled: true },
                                 },
                                 scales: {
                                     y: {
                                         beginAtZero: true,
-                                        ticks: { color: "white" } // Changed Y-axis text color to white
+                                        ticks: { color: "white" }
                                     },
                                     x: {
-                                        ticks: { color: "white" } // Changed X-axis text color to white
+                                        ticks: { color: "white" }
                                     }
                                 },
                             }}

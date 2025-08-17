@@ -13,13 +13,13 @@ export default function Banner() {
     const redirectPath = userId ? '/videos' : '/login';
 
     const handleNavigation = () => {
-        // console.log("Navigating to:", redirectPath);
+        // console.log(redirectPath);
         navigate(redirectPath);
     };
 
     return (
         <>
-            {/* Inline styles for our custom animated background */}
+            
             <style>{`
                 @keyframes blob {
                     0% {
@@ -51,13 +51,12 @@ export default function Banner() {
 
                 }}
             >
-                {/* Unique Animated Background */}
                 <div
                     className="animated-bg position-absolute top-0 start-0 w-100 h-100"
                     style={{ zIndex: 1 }}
                 ></div>
 
-                {/* Main Content */}
+               
                 <div
                     className="d-flex flex-column flex-md-row align-items-center justify-content-center text-dark py-5 position-relative"
                     style={{ minHeight: '100vh', zIndex: 10 }}
@@ -126,7 +125,7 @@ export default function Banner() {
                             </button>
                         </motion.div>
 
-                        {/* Decorative Lottie Animation */}
+                        
                         <div
                             className="position-absolute bottom-0 start-50 translate-middle-x"
                             style={{ zIndex: 1, pointerEvents: 'none' }}

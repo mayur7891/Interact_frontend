@@ -55,12 +55,12 @@ export default function DisplayVideo({ video_id }) {
         },
     ];
 
-    const videoDetails = sampleVideos[video_id - 1]; // Displaying one sample video for now
+    const videoDetails = sampleVideos[video_id - 1]; 
 
     return (
         <>
             <Navbar />
-            {/* Inline media query for smaller screens */}
+           
             <style>{`
         @media (max-width: 576px) {
           .channel-logo-sm {
@@ -79,7 +79,7 @@ export default function DisplayVideo({ video_id }) {
         }
       `}</style>
             <div className="container">
-                {/* Video Player Section */}
+                
                 <div
                     className="d-flex justify-content-center py-3"
                     style={{ maxWidth: "1268px", maxHeight: "713px" }}
@@ -99,12 +99,12 @@ export default function DisplayVideo({ video_id }) {
                     ></iframe>
                 </div>
 
-                {/* Video Details Section */}
+               
                 <div
                     className="mt-4 px-4 d-flex align-items-center justify-content-between flex-wrap"
                     style={{ whiteSpace: "nowrap", marginTop: "1rem" }}
                 >
-                    {/* Left Section */}
+                   
                     <div className="d-flex align-items-center flex-wrap">
                         <img
                             src={videoDetails.channelLogo}
@@ -135,7 +135,7 @@ export default function DisplayVideo({ video_id }) {
                         </button>
                     </div>
 
-                    {/* Right Section - Action Buttons */}
+                    
                     <div className="d-flex gap-3 flex-wrap" style={{ display: "inline-flex" }}>
                         <button
                             className="btn btn-sm d-flex align-items-center gap-1"

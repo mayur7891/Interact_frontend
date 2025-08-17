@@ -14,7 +14,6 @@ const SentimentChart = () => {
     const sentimentLabels = ["Positive", "Negative", "Neutral"];
     const sentimentColors = ["rgba(100, 255, 0, 0.7)", "rgba(255, 0, 0, 0.7)", "rgba(200, 50, 255, 0.7)"];
 
-    // Fetch sentiment data when component mounts
     useEffect(() => {
         const fetchSentimentData = async () => {
             try {
@@ -33,7 +32,7 @@ const SentimentChart = () => {
         fetchSentimentData();
     }, [video_id]);
 
-    // Handle loading state
+    
     if (loading) {
         return (
             <div className="text-center mt-5">
@@ -43,7 +42,7 @@ const SentimentChart = () => {
         );
     }
 
-    // Handle error state
+  
     if (error || !sentimentCounts) {
         return (
             <div className="text-center mt-5">
@@ -76,7 +75,7 @@ const SentimentChart = () => {
             title: { display: true, text: "Sentiment Analysis" },
             tooltip: {
                 callbacks: {
-                    label: (tooltipItem) => `${tooltipItem.raw}%`, // Show percentage in tooltip
+                    label: (tooltipItem) => `${tooltipItem.raw}%`, 
                 },
             },
         },
@@ -91,7 +90,7 @@ const SentimentChart = () => {
                 </div>
             </div>
 
-            {/* Sentiment Summary Section */}
+          
             <div className="card shadow-lg p-3 mt-3 w-100 text-center">
                 <h5 className="card-title fw-bold">Sentiment Analysis Summary</h5>
                 <table className="table table-bordered mt-2">

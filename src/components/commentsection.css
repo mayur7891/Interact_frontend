@@ -12,7 +12,7 @@
 }
 
 .custom-scroll:hover::-webkit-scrollbar {
-    background: #ddd; /* Light background when hovered */
+    background: #ddd; 
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
@@ -20,7 +20,7 @@
     border-radius: 4px;
 }
 
-/* Firefox scrollbar */
+
 .custom-scroll {
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;

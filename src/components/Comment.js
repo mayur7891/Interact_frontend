@@ -32,7 +32,7 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
                 setReplies(fetchedReplies);
             })
             .catch((err) => {
-                // console.error("Error fetching replies:", err);
+                // console.error(err);
                 setReplies([]);
                 setNoRepliesMessage("Failed to load replies. Please try again.");
             })
@@ -44,12 +44,12 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
     const addReply = () => {
         if (!replyText.trim()) return;
 
-        const loggedInUsername = localStorage.getItem("username") || "Unknown"; // Fetch logged-in username
+        const loggedInUsername = localStorage.getItem("username") || "Unknown";
 
         const newReply = {
             comment_id: _id,
             reply_user_id: localStorage.getItem("user_id"),
-            reply_username: loggedInUsername,  // Store username
+            reply_username: loggedInUsername,
             reply_text: replyText
         };
 
@@ -62,7 +62,7 @@ const Comment = ({ _id, user_id, comment, timestamp, cluster }) => {
                 }
             })
             .catch((err) => {
-                // console.error("Error posting reply:", err);
+                // console.error(err);
             });
     };
 

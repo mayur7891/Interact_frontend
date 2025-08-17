@@ -8,24 +8,24 @@ const YourReply = () => {
   const { video_id } = useParams();
   const user_id = localStorage.getItem("user_id");
   const [yourComments, setYourComments] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loader state
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
-    setLoading(true); // Show loader before fetching comments
+    setLoading(true); 
 
     axios.get(`https://flask-app-993257609003.asia-south1.run.app/comments/${user_id}/${video_id}`)
       .then((res) => {
         if (res.data.success) {
           setTimeout(() => {
             setYourComments(res.data.comments);
-            setLoading(false); // Hide loader after data is loaded
+            setLoading(false); 
           }, 500);
         } else {
           setLoading(false);
         }
       })
       .catch((err) => {
-        // console.error("Error fetching your comments:", err);
+ 
         setLoading(false);
       });
 

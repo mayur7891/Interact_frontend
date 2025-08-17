@@ -28,7 +28,7 @@ function Navbar() {
 
     return (
         <>
-            {/* Navbar */}
+          
             <nav className="navbar navbar-expand-lg p-3 " style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)' }}>
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
@@ -46,7 +46,7 @@ function Navbar() {
                         </div>
                     </a>
 
-                    {/* Hamburger Toggle Button */}
+                   
                     <button
                         className="navbar-toggler bg-white"
                         type="button"
@@ -58,7 +58,7 @@ function Navbar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                    {/* Navbar Links */}
+                   
                     <div
                         className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`}
                         id="navbarNavDropdown"
@@ -96,7 +96,7 @@ function Navbar() {
                                     About
                                 </Link>
                             </li>
-                            {/* Logout Button */}
+                           
                             <li className="nav-item">
                                 <button
                                     className="btn btn-outline-light mx-1 p-1"
@@ -120,7 +120,7 @@ function Navbar() {
                 </div>
             </nav>
 
-            {/* Plain and Stylish Logout Confirmation Modal */}
+            
             {showModal && (
                 <div className="plain-modal-overlay" onClick={() => setShowModal(false)}>
                     <div className="plain-modal-card" onClick={(e) => e.stopPropagation()}>
@@ -133,7 +133,7 @@ function Navbar() {
                         </div>
                         <div className="plain-modal-body">
                             <p>Are you sure you want to logout?</p>
-                            {/* Exclamation mark added between text and buttons */}
+                            
                             <div className="plain-modal-warning">
                                 <FaExclamationCircle size={32} className="warning-icon" />
                             </div>
@@ -150,7 +150,7 @@ function Navbar() {
                 </div>
             )}
 
-            {/* Inline CSS for Plain Modal Styling */}
+            
             <style jsx="true">{`
         .plain-modal-overlay {
           position: fixed;

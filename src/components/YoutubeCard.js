@@ -18,7 +18,7 @@ function YouTubeCard({ video }) {
                     marginBottom: "0px"
                 }}
             >
-                {/* 16:9 Thumbnail using Bootstrap ratio */}
+               
                 <div className="ratio ratio-16x9" style={{ borderRadius: "12px", overflow: "hidden" }}>
                     <img
                         src={video.thumbnail}
@@ -31,9 +31,9 @@ function YouTubeCard({ video }) {
                     />
                 </div>
 
-                {/* Spacing between image and text */}
+          
                 <div className="px-2 pt-3 d-flex">
-                    {/* Channel Icon */}
+                    
                     <img
                         src={video.channelIcon}
                         alt="Channel Icon"
@@ -41,7 +41,7 @@ function YouTubeCard({ video }) {
                         style={{ width: "36px", height: "36px" }}
                     />
 
-                    {/* Video Info */}
+                
                     <div style={{ maxWidth: "85%" }}>
                         <h6
                             className="mb-1 fw-bold text-truncate"

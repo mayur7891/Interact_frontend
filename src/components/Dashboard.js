@@ -43,7 +43,7 @@ const Dashboard = () => {
 
                 setVideoData(videosWithExtras);
             } catch (error) {
-                // console.error("Error fetching videos:", error);
+                
             }
             setLoading(false);
         };
@@ -55,7 +55,7 @@ const Dashboard = () => {
         <>
         <Navbar></Navbar>
         <div className="container mt-4" style={{height:'100vh'}}>
-            {/* Video Selection UI */}
+          
             <div className="p-4" style={{ background: "transparent" }}>
                 <h2 className="h4 mb-4 text-center text-light">Select a Video for Analysis</h2>
                 <div className="row g-3">

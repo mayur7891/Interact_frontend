@@ -10,7 +10,7 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
     const [replyList, setReplyList] = useState(replies);
     const [expanded, setExpanded] = useState(false);
 
-    // Fetch logged-in username
+    
     const loggedInUsername = localStorage.getItem("username") || "You";
 
     const handleReplySubmit = () => {
@@ -34,7 +34,7 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
             }}
         >
             <div className="d-flex align-items-start">
-                {/* Show correct profile initial */}
+                
                 <div className="profile-icon me-2">{username.charAt(0).toUpperCase()}</div>
                 <div className="flex-grow-1">
                     <div className="d-flex justify-content-between align-items-center">
@@ -82,7 +82,6 @@ const CommentCard = ({ username, comment = "", time, replies = [] }) => {
                                         className="reply-card p-2 mb-2 rounded"
                                     >
                                         <div className="d-flex align-items-center">
-                                            {/* ✅ Correct replier's initial */}
                                             <div className="profile-icon-reply me-2">
                                                 {reply.username.charAt(0).toUpperCase()}
                                             </div>

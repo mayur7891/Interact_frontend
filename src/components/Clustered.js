@@ -29,9 +29,8 @@ const Clustered = () => {
                 let clusters = res.data.clusters;
                 // let maxCluster = Math.max(...clusters.map(item => item.cluster));
                 // let sortedClusters = new Array(maxCluster + 1).fill({});
-                let minCluster = Math.min(...clusters.map(item => item.cluster)); // Get the minimum cluster index
-                let maxCluster = Math.max(...clusters.map(item => item.cluster)); // Get the maximum cluster index
-
+                let minCluster = Math.min(...clusters.map(item => item.cluster)); 
+                let maxCluster = Math.max(...clusters.map(item => item.cluster)); 
                 let sortedClusters = new Array(maxCluster - minCluster + 1).fill(null);
                 clusters.forEach(item => {
                     sortedClusters[item.cluster + 1] = item;
@@ -71,21 +70,21 @@ const Clustered = () => {
         if (!replyText[cluster_no]?.trim()) return;
 
         try {
-            // Fetch all comments in the cluster
+           
             const res = await axios.get(`https://flask-app-993257609003.asia-south1.run.app/comments/cluster/${video_id}/${cluster_no}`);
 
             if (!res.data || !Array.isArray(res.data.comments)) {
-                // console.error("Invalid response format:", res.data);
+                // console.error(res.data);
                 return;
             }
 
             const newReplies = res.data.comments.map(comment => ({
-                comment_id: comment._id,  // Use individual comment ID
+                comment_id: comment._id,
                 reply_user_id: creator_id,
                 reply_text: replyText[cluster_no]
             }));
 
-            // Send all replies in parallel
+            
             const replyPromises = newReplies.map(newReply =>
                 axios.post(`https://flask-app-993257609003.asia-south1.run.app/comments/${newReply.comment_id}/reply`, newReply)
             );
@@ -104,18 +103,18 @@ const Clustered = () => {
             setTimeout(() => setAlertMessage(null), 3000);
 
 
-            // Emit socket events for successful replies
+            
             responses.forEach(response => {
                 if (response.data.success) {
                     socket.emit("new_reply", response.data.reply);
                 }
             });
 
-            // Clear the input field after replying
+            
             setReplyText(prev => ({ ...prev, [cluster_no]: "" }));
 
         } catch (err) {
-            // console.error("Error posting replies:", err);
+            // console.error(err);
             setAlertMessage("Error posting replies!");
             setAlertType("danger");
             setTimeout(() => setAlertMessage(null), 3000);

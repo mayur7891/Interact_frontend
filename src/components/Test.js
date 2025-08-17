@@ -64,7 +64,7 @@ const Test = () => {
         setComment("");
       }
     } catch (error) {
-      // console.error("Error posting comment:", error);
+     
     }
   };
 
@@ -78,7 +78,7 @@ const Test = () => {
 
       await axios.put(`https://flask-app-993257609003.asia-south1.run.app/ml/update-summary/${video_id}`, { summary: newSummary });
     } catch (error) {
-      // console.error("Error updating summary:", error);
+     
     }
   };
 
@@ -101,7 +101,7 @@ const Test = () => {
 
       return existingSummary;
     } catch (error) {
-      // console.error("Error generating summary:", error);
+     
       return existingSummary;
     }
   };

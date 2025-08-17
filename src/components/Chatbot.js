@@ -88,7 +88,7 @@ const Chatbot = () => {
         </ul>
       )}
 
-      {/* Internal Styles */}
+ 
       <style>{`
         .chatbot-container {
           background: transparent;

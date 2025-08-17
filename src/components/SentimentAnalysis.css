@@ -19,7 +19,6 @@
     max-width: 400px;
 }
 
-/* Ensure progress bar container uses full width */
 .progress-bar-container {
     width: 100%;
     max-width: 450px;
@@ -34,7 +33,7 @@
     color: #fff;
 }
 
-/* Fade-in Animation */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -47,7 +46,6 @@
     }
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .chart-container {
         margin-bottom: 20px;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_KEY = "AIzaSyDeQwjklidMRCb9dubHg52mbJGG_KxQfYk"; // Replace with your actual API Key
+const API_KEY = process.env.REACT_APP_GEMINI_API_KEY ;
 
 const Assistant = ({ video_id }) => {
     const [summary, setSummary] = useState("Fetching summary...");
@@ -13,18 +13,18 @@ const Assistant = ({ video_id }) => {
         fetchSummary();
     }, [video_id]);
 
-    // Fetch summary from database
+
     const fetchSummary = async () => {
         try {
             const response = await axios.get(`https://flask-app-993257609003.asia-south1.run.app/ml/getsummary/${video_id}`);
             setSummary(response.data?.summary || "No summary available.");
         } catch (error) {
-            // console.error("Error fetching summary:", error);
+          
             setSummary("Failed to fetch summary.");
         }
     };
 
-    // Ask question to Gemini
+    
     const askQuestion = async () => {
         if (!question.trim()) return alert("Please enter a question.");
         setLoading(true);
@@ -45,7 +45,7 @@ const Assistant = ({ video_id }) => {
                 }
             );
 
-            // console.log("🔹 Gemini API Response:", response.data);
+            // console.log( response.data);
 
             if (
                 response.data?.candidates &&
@@ -58,7 +58,7 @@ const Assistant = ({ video_id }) => {
                 setAnswer("No valid answer received.");
             }
         } catch (error) {
-            // console.error("🚨 Error generating answer:", error);
+            // console.error(error);
             setAnswer("Error fetching answer.");
         } finally {
             setLoading(false);

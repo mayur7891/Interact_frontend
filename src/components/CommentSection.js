@@ -18,14 +18,14 @@ function CommentSection() {
         setLoading(true);
         axios.get(`https://flask-app-993257609003.asia-south1.run.app/comments/${video_id}/comments`)
             .then((res) => {
-                // console.log("Comments fetched:", res.data);
+                // console.log(res.data);
                 setComments(res.data);
             })
             .catch((err) => {
-                // console.error("Error fetching comments:", err);
+                // console.error(err);
             })
             .finally(() => {
-                // console.log("Stopping loader...");
+                // console.log("Stopping...");
                 setTimeout(() => setLoading(false), 500);
             });
 
@@ -63,7 +63,7 @@ function CommentSection() {
                 }
             })
             .catch((err) =>{ 
-                // console.error("Error posting comment:", err)
+                // console.error(err)
             })
     };
 
@@ -84,7 +84,6 @@ function CommentSection() {
 
             <div className="container comment-card custom-scroll bg-white" style={{ border: 'none', minHeight: "150px" }}>
                 {loading ? (
-                    // Bootstrap Loader (Spinner) when loading is true
                     <div className="d-flex justify-content-center align-items-center mt-3" style={{ minHeight: "150px" }}>
                         <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
                             <span className="visually-hidden">Loading...</span>

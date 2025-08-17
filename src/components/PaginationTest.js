@@ -11,12 +11,12 @@ const PaginationTest = () => {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lastCommentId, setLastCommentId] = useState(null);
-    const [hasMore, setHasMore] = useState(true); // Track if more comments are available
+    const [hasMore, setHasMore] = useState(true); 
     const observer = useRef(null);
     const { video_id } = useParams();
     const user_id = localStorage.getItem("user_id");
 
-    // Fetch Comments Function
+    
     const fetchComments = useCallback(async () => {
         if (!hasMore) return;
 
@@ -36,20 +36,20 @@ const PaginationTest = () => {
                 setHasMore(false);
             }
         } catch (error) {
-            // console.error("Error fetching comments:", error);
+            // console.error(error);
         }
         setLoading(false);
     }, [video_id, lastCommentId, hasMore]);
 
-    // Fetch Initial Comments
+
     useEffect(() => {
         setComments([]);
         setLastCommentId(null);
         setHasMore(true);
-        fetchComments(); // Direct call without dependency
+        fetchComments(); 
     }, [video_id]);
 
-    // Socket.IO for Real-Time Comments
+   
     useEffect(() => {
         socket.emit("join", { video_id });
 
@@ -67,7 +67,6 @@ const PaginationTest = () => {
         };
     }, [video_id]);
 
-    // Handle Comment Submission
     const handleComment = async () => {
         if (!comment.trim()) return;
 
@@ -76,14 +75,13 @@ const PaginationTest = () => {
         try {
             const res = await axios.post(`https://flask-app-993257609003.asia-south1.run.app/comments/${video_id}/add`, newComment);
             if (res.data.success) {
-                setComment(""); // WebSocket will handle UI update
+                setComment("");
             }
         } catch (error) {
-            // console.error("Error posting comment:", error);
+            // console.error(error);
         }
     };
 
-    // Infinite Scroll Logic
     const lastCommentRef = useCallback((node) => {
         if (loading || !hasMore) return;
 

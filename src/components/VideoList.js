@@ -32,9 +32,9 @@ const VideoList = () => {
                 const response = await axios.get(
                     "https://flask-app-993257609003.asia-south1.run.app/video/videos"
                 );
-                // Simulate a slight delay for demonstration
+               
                 setTimeout(() => {
-                    // Cycle through icons and thumbnails
+             
                     const videosWithExtras = response.data.map((video, index) => ({
                         ...video,
                         channelIcon: channelIcons[index % channelIcons.length],
@@ -44,7 +44,7 @@ const VideoList = () => {
                     setLoading(false);
                 }, 500);
             } catch (error) {
-                // console.error("Error fetching videos:", error);
+                
                 setLoading(false);
             }
         };
@@ -71,7 +71,7 @@ const VideoList = () => {
                             </div>
                         </div>
                     ) : videoData.length > 0 ? (
-                        // Use a flex container that wraps, so cards with fixed width will wrap naturally
+                       
                         <div className="d-flex flex-wrap justify-content-start">
                             {videoData.map((video, index) => (
                                 <div key={video.video_id || index} className="p-2">
